@@ -43,22 +43,22 @@ class Fox
 
   def move_left
     update_animation
-    @x -= 4
+    @x -= 2
     @direction = @fox_scale
   end
   def move_right
     update_animation
-    @x += 4
+    @x += 2
     @direction = -@fox_scale
     @x - @frames[@current_frame].width
   end
   def move_up
     update_animation
-    @y -= 4
+    @y -= 2
   end
   def move_down
     update_animation
-    @y += 4
+    @y += 2
   end
 
 
@@ -66,7 +66,7 @@ class Fox
     x = @direction == @fox_scale ? @fox_scale : -@fox_scale
     adjusted_x = x == -@fox_scale ? @x + @frames[@current_frame].width : @x
 
-    @frames[@current_frame].draw(adjusted_x, @y, 0, x, @fox_scale)
+    @frames[@current_frame].draw adjusted_x, @y, 0, x, @fox_scale
   end
 end
 
