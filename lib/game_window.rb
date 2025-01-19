@@ -14,7 +14,8 @@ class GameWindow < Gosu::Window
 
     @background_color = Config::COLORS[:background]
     @fox              = Fox.new
-    @maze             = Maze.new Config::GRID_ROWS, Config::GRID_COLS
+    # @maze             = Maze.new Config::GRID_ROWS, Config::GRID_COLS
+    @maze             = MazeSidewinder.new Config::GRID_ROWS, Config::GRID_COLS
   end
 
   def update
@@ -23,7 +24,7 @@ class GameWindow < Gosu::Window
 
   def draw
     draw_rect 0,0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, @background_color
-    @maze.draw(Config::CELL_SIZE)
     @fox.draw
+    @maze.draw(Config::CELL_SIZE)
   end
 end

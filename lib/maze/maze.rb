@@ -46,6 +46,10 @@ class Maze
 
 
   def process_wall(wall, wall_list)
+    wall_list.reject! do |wall_pair|
+      wall_pair[0].path_tile && wall_pair[0] != wall[1]
+    end
+
     cell1, cell2 = wall
     new_cell = nil
     if cell1.path_tile ^ cell2.path_tile
@@ -58,9 +62,7 @@ class Maze
     end
     # Remove this wall from the list after processing it
 
-    wall_list.delete_if do |pair|
-      pair[0].path_tile && pair[0] != new_cell
-    end
+    wall_list.delete(wall)
   end
 
 
@@ -77,9 +79,9 @@ class Maze
     col = cell.col
     {
       north: (row > 1 ? @grid[row - 1][col] : nil),
-      south: (row < @rows - 1 ? @grid[row + 1][col] : nil),
+      south: (row < @rows - 2 ? @grid[row + 1][col] : nil),
       west: (col > 1 ? @grid[row][col - 1] : nil),
-      east: (col < @cols - 1 ? @grid[row][col + 1] : nil)
+      east: (col < @cols - 2 ? @grid[row][col + 1] : nil)
     }.compact.values
   end
 
@@ -88,9 +90,9 @@ class Maze
     @grid.each_with_index do |row, row_index|
       row.each_with_index do |cell, col_index|
         neighbors = {
-          north: (row_index > 1 ? @grid[row_index - 1][col_index] : nil),
+          north: (row_index > 0 ? @grid[row_index - 1][col_index] : nil),
           south: (row_index < @rows.size - 1 ? @grid[row_index + 1][col_index] : nil),
-          west:  (col_index > 1 ? @grid[row_index][col_index - 1] : nil),
+          west:  (col_index > 0 ? @grid[row_index][col_index - 1] : nil),
           east:  (col_index < @cols.size - 1 ? @grid[row_index][col_index + 1] : nil)
         }
         cell.update_tile(neighbors)
