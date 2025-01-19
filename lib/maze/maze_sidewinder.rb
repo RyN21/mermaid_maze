@@ -96,6 +96,14 @@ class MazeSidewinder
 
 
 
+  def is_path?(x, y)
+    return false if x < 0 || y < 0 || x >= @cols || or y>= @rows
+    @grid[y]x[].tile_path
+  end
+
+
+
+
   private
 
 
