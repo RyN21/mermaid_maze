@@ -52,29 +52,29 @@ class Fox
 
   def move_left
     update_animation
-    if is_valid_move?(@x - 2 , @y)
-      @x -= 2
+    if is_valid_move?(@x - MOVE_SPEED , @y)
+      @x -= MOVE_SPEED
       @direction = @fox_scale
     end
   end
   def move_right
     update_animation
-    if is_valid_move?(@x + 2, @y)
-      @x += 2
+    if is_valid_move?(@x + MOVE_SPEED, @y)
+      @x += MOVE_SPEED
       @direction = -@fox_scale
       @x - @frames[@current_frame].width
     end
   end
   def move_up
-    if is_valid_move?(@x, @y - 2)
+    if is_valid_move?(@x, @y - MOVE_SPEED)
       update_animation
-      @y -= 2
+      @y -= MOVE_SPEED
     end
   end
   def move_down
-    if is_valid_move?(@x, @y + 2)
+    if is_valid_move?(@x, @y + MOVE_SPEED)
       update_animation
-      @y += 2
+      @y += MOVE_SPEED
     end
   end
 

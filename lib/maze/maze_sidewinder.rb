@@ -11,7 +11,6 @@ class MazeSidewinder
     @grid = Array.new(rows) { |row| Array.new(cols) { |col| CellSidewinder.new(row, col, rows, cols) } }
     generate_maze
     connect_isolated_paths
-
     update_all_tiles
   end
 
@@ -67,10 +66,10 @@ class MazeSidewinder
     @grid.each_with_index do |row, row_index|
       row.each_with_index do |cell, col_index|
         neighbors = {
-          north: (row_index > 0 ? @grid[row_index - 1][col_index] : nil),
-          south: (row_index < @rows.size - 1 ? @grid[row_index + 1][col_index] : nil),
-          west:  (col_index > 0 ? @grid[row_index][col_index - 1] : nil),
-          east:  (col_index < @cols.size - 1 ? @grid[row_index][col_index + 1] : nil)
+          north: (row_index >= 0 ? @grid[row_index - 1][col_index] : nil),
+          south: (row_index <= @rows.size + 2 ? @grid[row_index + 1][col_index] : nil),
+          west:  (col_index >= 0 ? @grid[row_index][col_index - 1] : nil),
+          east:  (col_index <= @cols.size + 4 ? @grid[row_index][col_index + 1] : nil)
         }
         cell.update_tile(neighbors)
       end
