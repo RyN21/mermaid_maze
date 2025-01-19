@@ -2,6 +2,7 @@ require_relative "cell_sidewinder"
 
 class MazeSidewinder
   TILE_SIZE = Config::CELL_SIZE
+  attr_reader :grid
 
   def initialize(rows, cols)
     @rows = rows
@@ -97,8 +98,8 @@ class MazeSidewinder
 
 
   def is_path?(x, y)
-    return false if x < 0 || y < 0 || x >= @cols || or y>= @rows
-    @grid[y]x[].tile_path
+    return false if x < 0 || y < 0 || x >= @cols || y>= @rows
+    @grid[y][x].tile_path
   end
 
 

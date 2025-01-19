@@ -13,9 +13,9 @@ class GameWindow < Gosu::Window
     self.caption = Config::CAPTION
 
     @background_color = Config::COLORS[:background]
-    @fox              = Fox.new
     # @maze             = Maze.new Config::GRID_ROWS, Config::GRID_COLS
     @maze             = MazeSidewinder.new Config::GRID_ROWS, Config::GRID_COLS
+    @fox              = Fox.new(@maze)
   end
 
   def update

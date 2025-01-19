@@ -1,6 +1,7 @@
 class Fox
-  def initialize
-    @frames = [
+  def initialize maze
+    @maze          = maze
+    @frames        = [
       Gosu::Image.new("assets/images/fox/Fox_run1.png"),
       Gosu::Image.new("assets/images/fox/Fox_run2.png"),
       Gosu::Image.new("assets/images/fox/Fox_run3.png")
@@ -8,11 +9,13 @@ class Fox
     @current_frame = 0
     @frame_delay   = 5
     @frame_counter = 0
-    @x             = 100
-    @y             = 100
-    @direction     = 1
+    @x             = 0
+    @y             = 0
+    @direction     = -1
     @fox_scale     = 1
+    place_on_path
   end
+
 
 
   def update_animation
@@ -23,6 +26,7 @@ class Fox
       @frame_counter = 0
     end
   end
+
 
 
   def update
@@ -39,6 +43,7 @@ class Fox
       move_down
     end
   end
+
 
 
   def move_left
@@ -62,11 +67,30 @@ class Fox
   end
 
 
+
   def draw
     x = @direction == @fox_scale ? @fox_scale : -@fox_scale
     adjusted_x = x == -@fox_scale ? @x + @frames[@current_frame].width : @x
 
     @frames[@current_frame].draw adjusted_x, @y, 0, x, @fox_scale
+  end
+
+
+
+  private
+
+
+
+  def place_on_path
+    @maze.grid.each_with_index do |row, y|
+      row.each_with_index do |cell, x|
+        if cell.tile_path
+          @x = x + 45
+          @y = y + 45
+          return
+        end
+      end
+    end
   end
 end
 
