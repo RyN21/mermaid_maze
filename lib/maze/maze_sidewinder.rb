@@ -9,6 +9,8 @@ class MazeSidewinder
     # @tile_images = load_tile_images
     @grid = Array.new(rows) { |row| Array.new(cols) { |col| CellSidewinder.new(row, col, rows, cols) } }
     generate_maze
+    connect_isolated_paths
+
     update_all_tiles
   end
 
@@ -75,5 +77,121 @@ class MazeSidewinder
   end
 
 
-  # Connect isolated mazes
+
+  def connect_isolated_paths
+    regions = label_regions
+
+    while regions.size > 1
+      region1, region2 = regions.keys.sample(2)
+      point1, point2 = find_nearest_points(regions, region1, region2)
+
+      connect_points(point1, point2)
+
+      regions[region1].concat(regions[region2])
+      regions.delete(region2)
+    end
+
+    verify_connectivity
+  end
+
+
+
+  private
+
+
+
+
+  def label_regions
+    regions = {}
+    region_id = 0
+
+    @grid.each_with_index do |row, y|
+      row.each_with_index do |cell, x|
+        next unless cell.tile_path # Skip non-path cells
+        next if regions.values.any? { |region| region.include?([y, x]) }
+
+        region_id += 1
+        regions[region_id] = flood_fill(y, x)
+      end
+    end
+
+    regions
+  end
+
+  def flood_fill(start_y, start_x)
+    queue = [[start_y, start_x]]
+    visited = Set.new
+
+    while !queue.empty?
+      y, x = queue.shift
+      next if visited.include?([y, x])
+      next unless (0...@rows).cover?(y) && (0...@cols).cover?(x)
+      next unless @grid[y][x].tile_path # Only consider path cells
+
+      visited.add([y, x])
+
+      [[y-1, x], [y+1, x], [y, x-1], [y, x+1]].each do |ny, nx|
+        queue << [ny, nx] if (0...@rows).cover?(ny) && (0...@cols).cover?(nx)
+      end
+    end
+
+    visited.to_a
+  end
+
+  def find_nearest_points(regions, region1, region2)
+    min_distance = Float::INFINITY
+    nearest_points = nil
+
+    regions[region1].each do |y1, x1|
+      regions[region2].each do |y2, x2|
+        distance = (y2 - y1).abs + (x2 - x1).abs
+        if distance < min_distance
+          min_distance = distance
+          nearest_points = [[y1, x1], [y2, x2]]
+        end
+      end
+    end
+
+    nearest_points
+  end
+
+  def connect_points(point1, point2)
+    y1, x1 = point1
+    y2, x2 = point2
+
+    while y1 != y2 || x1 != x2
+      if y1 < y2
+        y1 += 1
+      elsif y1 > y2
+        y1 -= 1
+      elsif x1 < x2
+        x1 += 1
+      elsif x1 > x2
+        x1 -= 1
+      end
+
+      @grid[y1][x1].tile_path = true # Set the cell as a path
+    end
+  end
+
+  def verify_connectivity
+    start_point = find_start_point
+    visited = flood_fill(start_point[0], start_point[1])
+
+    @grid.each_with_index do |row, y|
+      row.each_with_index do |cell, x|
+        if cell.tile_path && !visited.include?([y, x])
+          puts "Warning: Disconnected path found at (#{y}, #{x})"
+        end
+      end
+    end
+  end
+
+  def find_start_point
+    @grid.each_with_index do |row, y|
+      row.each_with_index do |cell, x|
+        return [y, x] if cell.tile_path
+      end
+    end
+  end
 end
