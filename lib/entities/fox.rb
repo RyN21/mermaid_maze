@@ -1,4 +1,8 @@
 class Fox
+  TILE_SIZE  = Config::CELL_SIZE
+  FOX_WIDTH  = 39
+  FOX_HEIGHT = 29
+  MOVE_SPEED = 2
   def initialize maze
     @maze          = maze
     @frames        = [
@@ -48,22 +52,30 @@ class Fox
 
   def move_left
     update_animation
-    @x -= 2
-    @direction = @fox_scale
+    if is_valid_move?(@x - 2 , @y)
+      @x -= 2
+      @direction = @fox_scale
+    end
   end
   def move_right
     update_animation
-    @x += 2
-    @direction = -@fox_scale
-    @x - @frames[@current_frame].width
+    if is_valid_move?(@x + 2, @y)
+      @x += 2
+      @direction = -@fox_scale
+      @x - @frames[@current_frame].width
+    end
   end
   def move_up
-    update_animation
-    @y -= 2
+    if is_valid_move?(@x, @y - 2)
+      update_animation
+      @y -= 2
+    end
   end
   def move_down
-    update_animation
-    @y += 2
+    if is_valid_move?(@x, @y + 2)
+      update_animation
+      @y += 2
+    end
   end
 
 
@@ -73,11 +85,21 @@ class Fox
     adjusted_x = x == -@fox_scale ? @x + @frames[@current_frame].width : @x
 
     @frames[@current_frame].draw adjusted_x, @y, 0, x, @fox_scale
+    draw_border(@x + 10, @y + 17, FOX_WIDTH, FOX_HEIGHT)
   end
 
 
 
   private
+
+
+
+  def draw_border(x, y, w, h)
+    Gosu.draw_line(x, y, Gosu::Color::RED, x + w, y, Gosu::Color::RED, 1) #top border
+    Gosu.draw_line(x + w, y, Gosu::Color::RED, x + w, y + h, Gosu::Color::RED, 1) #right border
+    Gosu.draw_line(x + w, y + h, Gosu::Color::RED, x, y + h, Gosu::Color::RED, 1) #bottom border
+    Gosu.draw_line(x, y + h, Gosu::Color::RED, x, y, Gosu::Color::RED, 1) #left border
+  end
 
 
 
@@ -92,7 +114,30 @@ class Fox
       end
     end
   end
+
+
+
+  # def is_valid_move?(new_x, new_y)
+  #   grid_x = x #/ Config::CELL_SIZE
+  #   grid_y = y #/ Config::CELL_SIZE
+  #   @maze.is_path?(grid_x, grid_y)
+  # end
+
+  def is_valid_move?(new_x, new_y)
+    # Check all four corners of the fox's hitbox
+    [
+      [new_x + 10, new_y + 17],
+      [new_x + 10 + FOX_WIDTH - 5, new_y + 17],
+      [new_x + 10, new_y + 17 + FOX_HEIGHT - 5],
+      [new_x + 10 + FOX_WIDTH - 5, new_y + 17 + FOX_HEIGHT - 5]
+    ].all? do |corner_x, corner_y|
+      grid_x = corner_x / TILE_SIZE
+      grid_y = corner_y / TILE_SIZE
+      @maze.is_path?(grid_x, grid_y)
+    end
+  end
 end
+# @fox_border = draw_border(@x + 10, @y + 17, FOX_WIDTH, FOX_HEIGHT)
 
 
 

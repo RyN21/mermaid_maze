@@ -11,9 +11,9 @@ class GameWindow < Gosu::Window
           Config::WINDOW_HEIGHT,
           Config::FULLSCREEN
     self.caption = Config::CAPTION
+    Gosu.enable_undocumented_retrofication
 
     @background_color = Config::COLORS[:background]
-    # @maze             = Maze.new Config::GRID_ROWS, Config::GRID_COLS
     @maze             = MazeSidewinder.new Config::GRID_ROWS, Config::GRID_COLS
     @fox              = Fox.new(@maze)
   end
