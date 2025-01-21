@@ -10,6 +10,7 @@ class Fox
       Gosu::Image.new("assets/images/fox/Fox_run2.png"),
       Gosu::Image.new("assets/images/fox/Fox_run3.png")
     ]
+    # @down1, @down2, @down3. @left1, @left2, @left3, @right1, @right2, @right3, @up1, @up2, @up3 = *Gosu::Image.load_tiles("assets/images/fox_sheet.png", 32, 32)
     @current_frame = 0
     @frame_delay   = 5
     @frame_counter = 0
