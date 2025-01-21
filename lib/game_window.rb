@@ -41,7 +41,7 @@ class GameWindow < Gosu::Window
   def add_coins_to_maze
     path_tiles = []
     path_tiles = @maze.grid.flatten.select(&:tile_path)
-    number_of_coins = path_tiles.size / 2
+    number_of_coins = path_tiles.size / 3
     path_tiles.shift # Makes sure coin isnt loaded at start path where fox is
     path_tiles.sample(number_of_coins).each do |tile|
       x = tile.col * Config::CELL_SIZE + Config::CELL_SIZE / 2
