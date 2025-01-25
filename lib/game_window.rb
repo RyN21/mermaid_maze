@@ -16,7 +16,7 @@ class GameWindow < Gosu::Window
     Gosu.enable_undocumented_retrofication
 
     @background_color   = Config::COLORS[:background]
-    @maze               = MazeSidewinder.new Config::GRID_ROWS, Config::GRID_COLS
+    @maze               = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS, self)
     @character          = Mermaid.new(@maze) # 0 for first row mermaid
     @coins              = Array.new
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)

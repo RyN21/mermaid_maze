@@ -1,17 +1,25 @@
 require_relative "cell_sidewinder"
+require "box2d"
 
 class MazeSidewinder
   TILE_SIZE = Config::CELL_SIZE
-  attr_reader :grid
+  attr_reader :grid, :world
 
-  def initialize(rows, cols)
-    @rows = rows
-    @cols = cols
-    # @tile_images = load_tile_images
-    @grid = Array.new(rows) { |row| Array.new(cols) { |col| CellSidewinder.new(row, col, rows, cols) } }
+  def initialize(rows, cols, window)
+    @rows   = rows
+    @cols   = cols
+    @window = window
+    @grid   = Array.new(rows) { |row| Array.new(cols) { |col| CellSidewinder.new(row, col, rows, cols) } }
+    @world  = Box2D::World.new(0,0)  # No Gravity
+    @space.damping = 0.8
     generate_maze
-    connect_isolated_paths
-    update_all_tiles
+    create_walls
+  end
+
+
+
+  def update
+    @world.step(1.0/60.0, 6, 2)
   end
 
 
@@ -28,6 +36,8 @@ class MazeSidewinder
         end
       end
     end
+    connect_isolated_paths
+    update_all_tiles
   end
 
 
@@ -101,6 +111,32 @@ class MazeSidewinder
     @grid[y][x].tile_path
   end
 
+
+  def create_walls
+    @grid.each_with_index do |row, y|
+      row.each_with_index do |cell, x|
+        unless cell.tile_path
+          create_wall(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
+        end
+      end
+    end
+  end
+
+  def create_wall(x, y, width, height)
+    body_def = Box2D::BodyDef.new
+    body_def.position.Set(x + width/2, y + height/2)
+    body_def.type = Box2D::Body::STATIC
+    body = @world.create_body(body_def)
+
+    shape = Box2D::PolygonShape.new
+    shape.set_as_box(width/2, height/2)
+
+    fixture_def = Box2D::FixtureDef.new
+    fixture_def.shape = shape
+    fixture_def.density = 1
+
+    body.create_fixture(fixture_def)
+  end
 
 
 
