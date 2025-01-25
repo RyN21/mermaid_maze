@@ -17,9 +17,13 @@ class GameWindow < Gosu::Window
     Gosu.enable_undocumented_retrofication
 
     @background_color   = Config::COLORS[:background]
+    @background_image   = Gosu::Image.new("assets/images/background_ocean.jpg")
     @maze               = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid            = Mermaid.new(@maze) # 0 for first row mermaid
-    @bubbe_rainbows     = Array.new
+    @bubble_rainbows    = Array.new
+
+    @level_up_sound     = Gosu::Sample.new("assets/sounds/level_up.mp3")
+
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
     # @gold_coins_anim    = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25 )
     # @silver_coins_anim  = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
@@ -28,18 +32,21 @@ class GameWindow < Gosu::Window
 
   def update
     # @fox.update
-    @bubbe_rainbows.each do |coin|
-      coin.update
+    @bubble_rainbows.each do |bubble|
+      bubble.update
     end
     @mermaid.update
-    @mermaid.collects_bubbles(@bubbe_rainbows)
+    @mermaid.collects_bubbles(@bubble_rainbows)
+    reset_maze if all_bubbles_collected?
   end
 
   def draw
-    draw_rect 0,0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, @background_color
+    # draw_rect 0,0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, @background_color
+    @background_image.draw 0, 0, 0, 0.20, 0.20
+
     @maze.draw(Config::CELL_SIZE)
     @mermaid.draw
-    @bubbe_rainbows.each(&:draw)
+    @bubble_rainbows.each(&:draw)
   end
 
   def add_bubbles_to_maze
@@ -50,7 +57,27 @@ class GameWindow < Gosu::Window
     path_tiles.sample(number_of_bubbles).each do |tile|
       x = tile.col * Config::CELL_SIZE + Config::CELL_SIZE / 2
       y = tile.row * Config::CELL_SIZE + Config::CELL_SIZE / 2
-      @bubbe_rainbows << BubbleRainbow.new(x, y)
+      @bubble_rainbows << BubbleRainbow.new(x, y)
     end
   end
+
+  def all_bubbles_collected?
+    @bubble_rainbows.empty?
+  end
+
+  def reset_maze
+    @level_up_sound.play
+    @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
+    @mermaid = Mermaid.new(@maze) # 0 for first row mermaid
+
+    add_bubbles_to_maze
+    @mermaid.place_on_path
+  end
 end
+
+
+# GAME FEATURES TO ADD
+#
+# accidentally runs into something she shouldn't
+# something scart pops up
+# if she runs into something the bubbles reset or something similar

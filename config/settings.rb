@@ -2,7 +2,7 @@ module Config
   # Window Settings
   WINDOW_WIDTH  = 800
   WINDOW_HEIGHT = 600
-  FULLSCREEN    = false
+  FULLSCREEN    = true
   CAPTION       = "Critter Quest"
 
   # Grid Settings
