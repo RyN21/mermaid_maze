@@ -1,5 +1,4 @@
 require_relative "cell_sidewinder"
-require "box2d"
 
 class MazeSidewinder
   TILE_SIZE = Config::CELL_SIZE
