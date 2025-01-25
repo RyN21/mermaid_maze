@@ -13,7 +13,6 @@ class MazeSidewinder
     @world  = Box2D::World.new(0,0)  # No Gravity
     @space.damping = 0.8
     generate_maze
-    create_walls
   end
 
 
@@ -109,33 +108,6 @@ class MazeSidewinder
   def is_path?(x, y)
     return false if x < 0 || y < 0 || x >= @cols || y>= @rows
     @grid[y][x].tile_path
-  end
-
-
-  def create_walls
-    @grid.each_with_index do |row, y|
-      row.each_with_index do |cell, x|
-        unless cell.tile_path
-          create_wall(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
-        end
-      end
-    end
-  end
-
-  def create_wall(x, y, width, height)
-    body_def = Box2D::BodyDef.new
-    body_def.position.Set(x + width/2, y + height/2)
-    body_def.type = Box2D::Body::STATIC
-    body = @world.create_body(body_def)
-
-    shape = Box2D::PolygonShape.new
-    shape.set_as_box(width/2, height/2)
-
-    fixture_def = Box2D::FixtureDef.new
-    fixture_def.shape = shape
-    fixture_def.density = 1
-
-    body.create_fixture(fixture_def)
   end
 
 
