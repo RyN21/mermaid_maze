@@ -34,18 +34,11 @@ class Fox
 
 
   def update
-    if Gosu.button_down? Gosu::KB_LEFT
-      move_left
-    end
-    if Gosu.button_down? Gosu::KB_RIGHT
-      move_right
-    end
-    if Gosu.button_down? Gosu::KB_UP
-      move_up
-    end
-    if Gosu.button_down? Gosu::KB_DOWN
-      move_down
-    end
+    move_left if Gosu.button_down? Gosu::KB_LEFT
+    move_right if Gosu.button_down? Gosu::KB_RIGHT
+    move_up if Gosu.button_down? Gosu::KB_UP
+    move_down if Gosu.button_down? Gosu::KB_DOWN
+
   end
 
 
@@ -85,7 +78,7 @@ class Fox
     adjusted_x = x == -@fox_scale ? @x + @frames[@current_frame].width : @x
 
     @frames[@current_frame].draw adjusted_x, @y, 0, x, @fox_scale
-    draw_border(@x + 10, @y + 17, FOX_WIDTH, FOX_HEIGHT)
+    # draw_border(@x + 10, @y + 17, FOX_WIDTH, FOX_HEIGHT)
   end
 
 
@@ -116,12 +109,6 @@ class Fox
   end
 
 
-
-  # def is_valid_move?(new_x, new_y)
-  #   grid_x = x #/ Config::CELL_SIZE
-  #   grid_y = y #/ Config::CELL_SIZE
-  #   @maze.is_path?(grid_x, grid_y)
-  # end
 
   def is_valid_move?(new_x, new_y)
     # Check all four corners of the fox's hitbox

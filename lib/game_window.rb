@@ -1,5 +1,6 @@
 require_relative "../config/settings"
 require_relative "entities/fox"
+require_relative "entities/mermaid"
 require_relative "maze/maze"
 require_relative "maze/cell"
 require_relative "entities/coin"
@@ -16,7 +17,7 @@ class GameWindow < Gosu::Window
 
     @background_color   = Config::COLORS[:background]
     @maze               = MazeSidewinder.new Config::GRID_ROWS, Config::GRID_COLS
-    @fox                = Fox.new(@maze)
+    @character          = Mermaid.new(@maze) # 0 for first row mermaid
     @coins              = Array.new
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
     # @gold_coins_anim    = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25 )
@@ -25,16 +26,17 @@ class GameWindow < Gosu::Window
   end
 
   def update
-    @fox.update
+    # @fox.update
     @coins.each do |coin|
       coin.update
     end
+    @character.update
   end
 
   def draw
     draw_rect 0,0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, @background_color
     @maze.draw(Config::CELL_SIZE)
-    @fox.draw
+    @character.draw
     @coins.each(&:draw)
   end
 
