@@ -234,7 +234,15 @@ class Mermaid
 
 
   def collects_bubbles(bubbles)
-
+    frames = case @direction
+             when :up then @up_frames
+             when :down then @down_frames
+             when :left then @left_frames
+             when :right then @right_frames
+             end
+    bubbles.reject! do |bubble|
+      Gosu.distance(@x + frames[@current_frame].width/2 * @mermaid_scale, @y + frames[@current_frame].width/2 * @mermaid_scale, bubble.x, bubble.y - 10) < 30
+    end
   end
 
 
