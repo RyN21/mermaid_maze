@@ -7,7 +7,6 @@ class MazeSidewinder
   def initialize(rows, cols)
     @rows   = rows
     @cols   = cols
-    @window = window
     @grid   = Array.new(rows) { |row| Array.new(cols) { |col| CellSidewinder.new(row, col, rows, cols) } }
     generate_maze
   end
