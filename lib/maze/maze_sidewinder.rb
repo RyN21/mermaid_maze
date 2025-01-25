@@ -2,15 +2,13 @@ require_relative "cell_sidewinder"
 
 class MazeSidewinder
   TILE_SIZE = Config::CELL_SIZE
-  attr_reader :grid, :world
+  attr_reader :grid
 
-  def initialize(rows, cols, window)
+  def initialize(rows, cols)
     @rows   = rows
     @cols   = cols
     @window = window
     @grid   = Array.new(rows) { |row| Array.new(cols) { |col| CellSidewinder.new(row, col, rows, cols) } }
-    @world  = Box2D::World.new(0,0)  # No Gravity
-    @space.damping = 0.8
     generate_maze
   end
 
