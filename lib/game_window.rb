@@ -4,6 +4,7 @@ require_relative "entities/mermaid"
 require_relative "maze/maze"
 require_relative "maze/cell"
 require_relative "entities/coin"
+require_relative "entities/bubble_rainbow"
 
 
 class GameWindow < Gosu::Window
@@ -18,16 +19,16 @@ class GameWindow < Gosu::Window
     @background_color   = Config::COLORS[:background]
     @maze               = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @character          = Mermaid.new(@maze) # 0 for first row mermaid
-    @coins              = Array.new
+    @bubbe_rainbows     = Array.new
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
     # @gold_coins_anim    = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25 )
     # @silver_coins_anim  = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
-    add_coins_to_maze
+    add_bubbles_to_maze
   end
 
   def update
     # @fox.update
-    @coins.each do |coin|
+    @bubbe_rainbows.each do |coin|
       coin.update
     end
     @character.update
@@ -37,18 +38,18 @@ class GameWindow < Gosu::Window
     draw_rect 0,0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, @background_color
     @maze.draw(Config::CELL_SIZE)
     @character.draw
-    @coins.each(&:draw)
+    @bubbe_rainbows.each(&:draw)
   end
 
-  def add_coins_to_maze
+  def add_bubbles_to_maze
     path_tiles = []
     path_tiles = @maze.grid.flatten.select(&:tile_path)
-    number_of_coins = path_tiles.size / 3
+    number_of_bubbles = path_tiles.size / 3
     path_tiles.shift # Makes sure coin isnt loaded at start path where fox is
-    path_tiles.sample(number_of_coins).each do |tile|
+    path_tiles.sample(number_of_bubbles).each do |tile|
       x = tile.col * Config::CELL_SIZE + Config::CELL_SIZE / 2
       y = tile.row * Config::CELL_SIZE + Config::CELL_SIZE / 2
-      @coins << Coin.new(x, y)
+      @bubbe_rainbows << BubbleRainbow.new(x, y)
     end
   end
 end

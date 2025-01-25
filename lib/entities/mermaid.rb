@@ -18,7 +18,6 @@ class Mermaid
                     Gosu::Image.new("assets/images/mermaid/mermaid_right_2.png"),
                     Gosu::Image.new("assets/images/mermaid/mermaid_right_3.png")]
 
-
     @current_frame   = 0
     @frame_delay     = 7
     @frame_counter   = 0
@@ -234,6 +233,11 @@ class Mermaid
   end
 
 
+  def collects_bubbles(bubbles)
+
+  end
+
+
   private
 
 
@@ -249,7 +253,7 @@ class Mermaid
     @maze.grid.each_with_index do |row, y|
       row.each_with_index do |cell, x|
         if cell.tile_path
-          @x = x + 45
+          @x = x + 50
           @y = y + 45
           return
         end
@@ -259,8 +263,8 @@ class Mermaid
 
 
   def is_valid_move(new_x, new_y)
-    grid_x = (new_x + MERMAID_WIDTH * @mermaid_scale / 2) / TILE_SIZE
-    grid_y = (new_y + MERMAID_HEIGHT * @mermaid_scale / 2) / TILE_SIZE
+    grid_x = (new_x + MERMAID_WIDTH * @mermaid_scale) / TILE_SIZE
+    grid_y = (new_y + MERMAID_HEIGHT * @mermaid_scale) / TILE_SIZE
     @maze.is_path?(grid_x, grid_y)
   end
 end
