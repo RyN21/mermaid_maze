@@ -1,23 +1,29 @@
+require_relative "../effects/pop"
+
+
 class Mermaid
   TILE_SIZE      = Config::CELL_SIZE
   MERMAID_WIDTH  = 60
   MERMAID_HEIGHT = 83
-  MOVE_SPEED     = 7
+  MOVE_SPEED     = 3
   def initialize maze
     @maze        = maze
     @up_frames   = [Gosu::Image.new("assets/images/mermaid/mermaid_up_1.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_up_2.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_up_3.png")]
+      Gosu::Image.new("assets/images/mermaid/mermaid_up_2.png"),
+      Gosu::Image.new("assets/images/mermaid/mermaid_up_3.png")
+    ]
     @down_frames = [Gosu::Image.new("assets/images/mermaid/mermaid_down_1.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_down_2.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_down_3.png")]
+      Gosu::Image.new("assets/images/mermaid/mermaid_down_2.png"),
+      Gosu::Image.new("assets/images/mermaid/mermaid_down_3.png")
+    ]
     @left_frames = [Gosu::Image.new("assets/images/mermaid/mermaid_left_1.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_left_2.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_left_3.png")]
+      Gosu::Image.new("assets/images/mermaid/mermaid_left_2.png"),
+      Gosu::Image.new("assets/images/mermaid/mermaid_left_3.png")
+    ]
     @right_frames = [Gosu::Image.new("assets/images/mermaid/mermaid_right_1.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_right_2.png"),
-                    Gosu::Image.new("assets/images/mermaid/mermaid_right_3.png")]
-
+      Gosu::Image.new("assets/images/mermaid/mermaid_right_2.png"),
+      Gosu::Image.new("assets/images/mermaid/mermaid_right_3.png")
+    ]
 
     @current_frame   = 0
     @frame_delay     = 7
@@ -26,8 +32,6 @@ class Mermaid
     @y               = 0
     @direction       = :down
     @mermaid_scale   = 0.5
-
-    @bonus_pop_sound = Gosu::Sample.new("assets/sounds/bubble_pop_2.mp3")
 
     place_on_path
   end
@@ -110,9 +114,10 @@ class Mermaid
              when :left then @left_frames
              when :right then @right_frames
              end
+
     bubbles.reject! do |bubble|
       if Gosu.distance(@x + frames[@current_frame].width/2 * @mermaid_scale, @y + frames[@current_frame].width/2 * @mermaid_scale, bubble.x, bubble.y - 10) < 30
-        @bonus_pop_sound.play
+        bubble.pop
       else
         false
       end

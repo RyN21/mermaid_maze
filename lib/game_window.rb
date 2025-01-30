@@ -5,6 +5,7 @@ require_relative "maze/maze"
 require_relative "maze/cell"
 require_relative "entities/coin"
 require_relative "entities/bubble_rainbow"
+require_relative "effects/pop"
 
 
 class GameWindow < Gosu::Window
