@@ -115,11 +115,11 @@ class Mermaid
              when :right then @right_frames
              end
 
-    bubbles.reject! do |bubble|
-      if Gosu.distance(@x + frames[@current_frame].width/2 * @mermaid_scale, @y + frames[@current_frame].width/2 * @mermaid_scale, bubble.x, bubble.y - 10) < 30
-        bubble.pop
-      else
-        false
+    bubbles.each do |bubble|
+      if Gosu.distance(@x + frames[@current_frame].width/2 * @mermaid_scale,
+                       @y + frames[@current_frame].height/2 * @mermaid_scale,
+                       bubble.x, bubble.y - 10) < 30
+        bubble.pop unless bubble.popping? || bubble.popped?
       end
     end
   end

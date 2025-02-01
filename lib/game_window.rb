@@ -32,14 +32,13 @@ class GameWindow < Gosu::Window
   end
 
   def update
-    # @fox.update
-    @bubble_rainbows.each do |bubble|
-      bubble.update
-    end
+    @bubble_rainbows.each(&:update)
     @mermaid.update
     @mermaid.collects_bubbles(@bubble_rainbows)
+    @bubble_rainbows.reject! { |bubble| bubble.popped? }
     reset_maze if all_bubbles_collected?
   end
+
 
   def draw
     # draw_rect 0,0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, @background_color
@@ -48,6 +47,11 @@ class GameWindow < Gosu::Window
     @maze.draw(Config::CELL_SIZE)
     @mermaid.draw
     @bubble_rainbows.each(&:draw)
+  end
+
+  def reset_bubbles
+    @bubble_rainbows.clear
+    add_bubbles_to_maze
   end
 
   def add_bubbles_to_maze
@@ -63,16 +67,15 @@ class GameWindow < Gosu::Window
   end
 
   def all_bubbles_collected?
-    @bubble_rainbows.empty?
+    @bubble_rainbows.all?(&:popped?)
   end
 
   def reset_maze
     @level_up_sound.play
     @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid = Mermaid.new(@maze) # 0 for first row mermaid
-
-    add_bubbles_to_maze
     @mermaid.place_on_path
+    reset_bubbles
   end
 end
 

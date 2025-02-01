@@ -3,6 +3,7 @@ class BubbleRainbow
   SHEET_HEIGHT= 255
   FRAME_COUNT = 5
   FRAME_DELAY = 100 # milliseconds
+  POP_FRAME_DELAY = 50
   attr_reader :x, :y, :frames
 
   def initialize(x, y)
@@ -17,35 +18,51 @@ class BubbleRainbow
     @current_frame = 0
     @last_frame_change = Gosu.milliseconds
     @rotation = 0
+    @pop_start_time = 0
   end
 
   def update
-    return if @state == :popped
-
     current_time = Gosu.milliseconds
-    if current_time - @last_frame_change > FRAME_DELAY
-      @current_frame = (@current_frame + 1) % FRAME_COUNT
-      @last_frame_change = current_time
+
+    case @state
+    when :idle
+      if current_time - @last_frame_change > FRAME_DELAY
+        @current_frame = (@current_frame + 1) % FRAME_COUNT
+        @last_frame_change = current_time
+      end
+      @rotation += 1
+    when :popping
+      if current_time - @last_frame_change > POP_FRAME_DELAY
+        @current_frame += 1
+        @last_frame_change = current_time
+        if @current_frame >= @pop_frames.size
+          @state = :popped
+        end
+      end
     end
-    @rotation += 1
   end
 
   def draw
-    return if @state == :popped
-    
     case @state
     when :idle
       @frames[@current_frame].draw_rot(@x, @y, 0, 0, 0.5, 0.5, 0.20, 0.20)
     when :popping
-      @current_frame = 0
       @pop_frames[@current_frame].draw_rot(@x, @y, 0, 0, 0.5, 0.5, 0.20, 0.20)
     end
   end
 
   def pop
     @state = :popping
-    # @pop_frames[0].draw_rot(@x, @y, 0, 0, 0.5, 0.5, 0.20, 0.20)
+    @current_frame = 0
+    @last_frame_change = Gosu.milliseconds
     @pop_sound.play
-    # @frames[0]
+  end
+
+  def popping?
+    @state == :popping
+  end
+
+  def popped?
+    @state == :popped
   end
 end
