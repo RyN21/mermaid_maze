@@ -2,7 +2,7 @@ module Config
   # Window Settings
   WINDOW_WIDTH  = 800
   WINDOW_HEIGHT = 600
-  FULLSCREEN    = true
+  FULLSCREEN    = false
   CAPTION       = "Mermaid Maze"
 
   # Grid Settings
