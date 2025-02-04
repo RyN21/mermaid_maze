@@ -8,7 +8,7 @@ class StateManager
     @current_state = nil
   end
 
-  def switch_do(state)
+  def switch_to(state)
     @current_state = state
   end
 
