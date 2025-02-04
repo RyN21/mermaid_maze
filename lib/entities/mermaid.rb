@@ -8,21 +8,21 @@ class Mermaid
   MOVE_SPEED     = 3
   def initialize maze
     @maze        = maze
-    @up_frames   = [Gosu::Image.new("assets/images/mermaid/mermaid_up_1.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_up_2.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_up_3.png")
+    @up_frames   = [Gosu::Image.new("assets/images/mermaids/mermaid_up_1.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_up_2.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_up_3.png")
     ]
-    @down_frames = [Gosu::Image.new("assets/images/mermaid/mermaid_down_1.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_down_2.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_down_3.png")
+    @down_frames = [Gosu::Image.new("assets/images/mermaids/mermaid_down_1.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_down_2.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_down_3.png")
     ]
-    @left_frames = [Gosu::Image.new("assets/images/mermaid/mermaid_left_1.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_left_2.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_left_3.png")
+    @left_frames = [Gosu::Image.new("assets/images/mermaids/mermaid_left_1.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_left_2.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_left_3.png")
     ]
-    @right_frames = [Gosu::Image.new("assets/images/mermaid/mermaid_right_1.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_right_2.png"),
-      Gosu::Image.new("assets/images/mermaid/mermaid_right_3.png")
+    @right_frames = [Gosu::Image.new("assets/images/mermaids/mermaid_right_1.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_right_2.png"),
+      Gosu::Image.new("assets/images/mermaids/mermaid_right_3.png")
     ]
 
     @current_frame   = 0
