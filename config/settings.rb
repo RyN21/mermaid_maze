@@ -3,7 +3,7 @@ module Config
   WINDOW_WIDTH  = 800
   WINDOW_HEIGHT = 600
   FULLSCREEN    = true
-  CAPTION       = "Critter Quest"
+  CAPTION       = "Mermaid Maze"
 
   # Grid Settings
   CELL_SIZE = 50
