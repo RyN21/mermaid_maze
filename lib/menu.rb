@@ -1,6 +1,7 @@
 require "gosu"
 
 class Menu
+  CHARACTERS = ["Reija", "Adyra", "Stiorra", "Celine"]
   def initialize(state_manager)
     @state_manager = state_manager
     # @background = Gosu::Image.new("assets/images/background.png")
@@ -13,6 +14,12 @@ class Menu
   def update; end
 
   def draw
+    @font.draw_text("SELECT CHARACTER", 0, 0, 0, 1, 1)
+    @font.draw_text("SELECT CHARACTER", 0, 0, 0, 1, 1)
+    CHARACTERS.each do |char, index|
+      color = index == @character_select ? Gosu::Color::GREEN : Gosu::Color::WHITE
+      @font.draw_text(char, 233 + (index * 125), 430, 1, 1, 1, color)
+    end
     # @background.draw(0, 0, 0, 1, 1)
     # @logo.draw(0, 0, 0, 1, 1)
   end

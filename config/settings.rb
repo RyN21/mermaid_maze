@@ -39,22 +39,28 @@ module Config
   # Mermaid Character Path Settings
   MERMAIDS = {
     blue: {
-      up:,
-      down:,
-      left:,
-      right:
+      up: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_blue/mermaid_blue_up.png", 141, 64, retro: true),
+      down: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_blue/mermaid_blue_down.png", 141, 64, retro: true),
+      left: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_blue/mermaid_blue_left.png", 141, 64, retro: true),
+      right: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_blue/mermaid_blue_right.png", 141, 64, retro: true)
     },
     pink: {
-      up:,
-      down:,
-      left:,
-      right:
+      up: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_pink/mermaid_pink_up.png", 141, 64, retro: true),
+      down: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_pink/mermaid_pink_down.png", 141, 64, retro: true),
+      left: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_pink/mermaid_pink_left.png", 141, 64, retro: true),
+      right: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_pink/mermaid_pink_right.png", 141, 64, retro: true)
     },
     purple: {
-      up:,
-      down:,
-      left:,
-      right:
+      up: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_purple/mermaid_purple_up.png", 141, 64, retro: true),
+      down: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_purple/mermaid_purple_down.png", 141, 64, retro: true),
+      left: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_purple/mermaid_purple_left.png", 141, 64, retro: true),
+      right: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_purple/mermaid_purple_right.png", 141, 64, retro: true)
+    },
+    green: {
+      up: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_green/mermaid_green_up.png", 141, 64, retro: true),
+      down: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_green/mermaid_green_down.png", 141, 64, retro: true),
+      left: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_green/mermaid_green_left.png", 141, 64, retro: true),
+      right: Gosu::Image.load_tiles("assets/images/mermaids/mermaid_green/mermaid_green_right.png", 141, 64, retro: true)
     }
   }
 
