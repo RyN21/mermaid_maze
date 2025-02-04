@@ -8,14 +8,11 @@ require_relative "entities/bubble_rainbow"
 require_relative "effects/pop"
 
 
-class GameWindow < Gosu::Window
+class GameWindow
 
-  def initialize
-    super Config::WINDOW_WIDTH,
-          Config::WINDOW_HEIGHT,
-          Config::FULLSCREEN
-    self.caption = Config::CAPTION
-    Gosu.enable_undocumented_retrofication
+  def initialize(state_manager)
+    @state_manager = state_manager
+    # Gosu.enable_undocumented_retrofication
 
     @background_color   = Config::COLORS[:background]
     @background_image   = Gosu::Image.new("assets/images/background_ocean.jpg")
@@ -76,6 +73,13 @@ class GameWindow < Gosu::Window
     @mermaid = Mermaid.new(@maze) # 0 for first row mermaid
     @mermaid.place_on_path
     reset_bubbles
+  end
+
+  def button_down(id)
+    case id
+    when Gosu::KB_ESCAPE
+      @state_manager.switch_to(Menu.new(@state_manager))
+    end
   end
 end
 

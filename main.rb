@@ -1,4 +1,4 @@
-require  "gosu"
+require "gosu"
 require_relative "lib/game_window"
 require_relative "lib/state_manager"
 require_relative "lib/menu"
@@ -13,6 +13,7 @@ class Main < Gosu::Window
           Config::FULLSCREEN
     self.caption = Config::CAPTION
     Gosu.enable_undocumented_retrofication
+    @state_manager = StateManager.new(self)
     @state_manager.switch_to(Menu.new(@state_manager))
   end
 
