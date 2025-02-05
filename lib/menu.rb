@@ -33,7 +33,7 @@ class Menu
     @mermaid_purple.draw(447, 300, 0, 2, 2)
     @mermaid_blue.draw(647, 300, 0, 2, 2)
     @logo.draw(200, 50, 0, 1, 1)
-    @font.draw_text("PRESS ENTER TO PLAY", 250, 525, 0, 1, 1)
+    @font.draw_text("PRESS SPACE TO PLAY", 250, 525, 0, 1, 1)
     # @background.draw(0, 0, 0, 1, 1)
     # @logo.draw(0, 0, 0, 1, 1)
   end
@@ -42,7 +42,7 @@ class Menu
     case id
     when Gosu::KB_ESCAPE
       exit
-    when Gosu::KB_RETURN
+    when Gosu::KB_SPACE
       # @menu_music.stop
       @state_manager.switch_to(GameWindow.new(@state_manager, @character_index))
     when Gosu::KB_LEFT

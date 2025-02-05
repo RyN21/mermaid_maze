@@ -78,7 +78,7 @@ class GameWindow
 
   def button_down(id)
     case id
-    when Gosu::KB_ESCAPE
+    when Gosu::KB_BACKSPACE
       @state_manager.switch_to(Menu.new(@state_manager))
     end
   end

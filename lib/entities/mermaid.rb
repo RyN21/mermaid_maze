@@ -5,7 +5,7 @@ class Mermaid
   TILE_SIZE      = Config::CELL_SIZE
   MERMAID_WIDTH  = 47
   MERMAID_HEIGHT = 64
-  MOVE_SPEED     = 7
+  MOVE_SPEED     = 3
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
   def initialize maze, character
     @maze         = maze
@@ -138,8 +138,6 @@ class Mermaid
     Gosu.draw_line(x + w, y + h, Gosu::Color::RED, x, y + h, Gosu::Color::RED, 1) #bottom border
     Gosu.draw_line(x, y + h, Gosu::Color::RED, x, y, Gosu::Color::RED, 1) #left border
   end
-
-
 
 
   def is_valid_move(new_x, new_y)
