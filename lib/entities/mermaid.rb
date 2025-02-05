@@ -3,9 +3,9 @@ require_relative "../effects/pop"
 
 class Mermaid
   TILE_SIZE      = Config::CELL_SIZE
-  MERMAID_WIDTH  = 60
-  MERMAID_HEIGHT = 83
-  MOVE_SPEED     = 3
+  MERMAID_WIDTH  = 47
+  MERMAID_HEIGHT = 64
+  MOVE_SPEED     = 7
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
   def initialize maze, character
     @maze         = maze

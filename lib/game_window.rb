@@ -12,12 +12,13 @@ class GameWindow
 
   def initialize(state_manager, character_index)
     @state_manager = state_manager
+    @character_index = character_index
     # Gosu.enable_undocumented_retrofication
 
     @background_color   = Config::COLORS[:background]
     @background_image   = Gosu::Image.new("assets/images/background_ocean.jpg")
     @maze               = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
-    @mermaid            = Mermaid.new(@maze, character_index) # 0 for first row mermaid
+    @mermaid            = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
     @bubble_rainbows    = Array.new
 
     @level_up_sound     = Gosu::Sample.new("assets/sounds/level_up.mp3")
@@ -70,7 +71,7 @@ class GameWindow
   def reset_maze
     @level_up_sound.play
     @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
-    @mermaid = Mermaid.new(@maze) # 0 for first row mermaid
+    @mermaid = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
     @mermaid.place_on_path
     reset_bubbles
   end
