@@ -32,6 +32,7 @@ class GameWindow
   def update
     @bubble_rainbows.each(&:update)
     @mermaid.update
+    @mermaid.update_ammo
     @mermaid.collects_bubbles(@bubble_rainbows)
     @bubble_rainbows.reject! { |bubble| bubble.popped? }
     reset_maze if all_bubbles_collected?
@@ -44,6 +45,7 @@ class GameWindow
 
     @maze.draw(Config::CELL_SIZE)
     @mermaid.draw
+    @mermaid.draw_ammo
     @bubble_rainbows.each(&:draw)
   end
 
@@ -80,6 +82,8 @@ class GameWindow
     case id
     when Gosu::KB_BACKSPACE
       @state_manager.switch_to(Menu.new(@state_manager))
+    when Gosu::KB_SPACE
+      @mermaid.shoot
     end
   end
 end

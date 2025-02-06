@@ -1,4 +1,5 @@
 require_relative "../effects/pop"
+require "./lib/entities/ammo"
 
 
 class Mermaid
@@ -7,6 +8,8 @@ class Mermaid
   MERMAID_HEIGHT = 64
   MOVE_SPEED     = 3
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
+  attr_reader :direction
+
   def initialize maze, character
     @maze         = maze
     @character    = Config::MERMAIDS[CHRACTERS_LIST[character]]
@@ -23,6 +26,8 @@ class Mermaid
     @direction       = :down
     @mermaid_scale   = 0.75
 
+    @ammo_count      = 1000
+    @ammo_inventory  = []
     place_on_path
   end
 
@@ -114,6 +119,28 @@ class Mermaid
     end
   end
 
+  def shoot
+    if @ammo_count > 0
+      @ammo_inventory << Ammo.new(@x + MERMAID_WIDTH * @mermaid_scale, @y+ MERMAID_HEIGHT / 2 * @mermaid_scale, @direction)
+      @ammo_count -= 1
+    end
+  end
+
+  def update_ammo
+    @ammo_inventory.each(&:update)
+    @ammo_inventory.reject! do |ammo|
+      ammo.x < 0 || ammo.x > Config::WINDOW_WIDTH || ammo.y < 0 || ammo.y > Config::WINDOW_HEIGHT
+    end
+  end
+
+  def draw_ammo
+    @ammo_inventory.each(&:draw)
+  end
+
+
+
+  private
+
 
   def place_on_path
     @maze.grid.each_with_index do |row, y|
@@ -126,11 +153,6 @@ class Mermaid
       end
     end
   end
-
-
-  private
-
-
 
   def draw_border(x, y, w, h)
     Gosu.draw_line(x, y, Gosu::Color::RED, x + w, y, Gosu::Color::RED, 1) #top border
