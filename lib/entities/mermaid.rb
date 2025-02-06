@@ -6,7 +6,7 @@ class Mermaid
   TILE_SIZE      = Config::CELL_SIZE
   MERMAID_WIDTH  = 47
   MERMAID_HEIGHT = 64
-  MOVE_SPEED     = 3
+  MOVE_SPEED     = 7
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
   attr_reader :direction
 
@@ -129,7 +129,9 @@ class Mermaid
   def update_ammo
     @ammo_inventory.each(&:update)
     @ammo_inventory.reject! do |ammo|
-      ammo.x < 0 || ammo.x > Config::WINDOW_WIDTH || ammo.y < 0 || ammo.y > Config::WINDOW_HEIGHT
+      # ammo.x < 0 || ammo.x > Config::WINDOW_WIDTH || ammo.y < 0 || ammo.y > Config::WINDOW_HEIGHT
+      # is_valid_move_for_ammo(ammo.x + 2, ammo.y + 2)
+      @maze.is_path?(ammo.x + 2, ammo.y + 2)
     end
   end
 
@@ -167,4 +169,8 @@ class Mermaid
     grid_y = (new_y + MERMAID_HEIGHT / 2 * @mermaid_scale) / TILE_SIZE
     @maze.is_path?(grid_x, grid_y)
   end
+
+  # def is_valid_move_for_ammo(new_x, new_y)
+  #   @maze.is_path?()
+  # end
 end

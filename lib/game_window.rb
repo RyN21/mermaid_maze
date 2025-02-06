@@ -1,8 +1,8 @@
 require_relative "../config/settings"
 require_relative "entities/fox"
 require_relative "entities/mermaid"
-require_relative "maze/maze"
-require_relative "maze/cell"
+require_relative "maze/maze_sidewinder"
+require_relative "maze/cell_sidewinder"
 require_relative "entities/coin"
 require_relative "entities/bubble_rainbow"
 require_relative "effects/pop"
@@ -74,7 +74,6 @@ class GameWindow
     @level_up_sound.play
     @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
-    @mermaid.place_on_path
     reset_bubbles
   end
 

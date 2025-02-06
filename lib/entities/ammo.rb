@@ -42,5 +42,4 @@ class Ammo
       @blaster_frames[@current_frame].draw_rot(@x, @y, 0, 180, 0.50, 0.50, 0.40, 0.40)
     end
   end
-
 end
