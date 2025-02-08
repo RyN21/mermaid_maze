@@ -4,8 +4,8 @@ class CellSidewinder
   def initialize row, col, rows, cols
     @row        = row
     @col        = col
-    @x          = row + 25
-    @y          = col + 25
+    @x          = row * 50 + 25
+    @y          = col * 50 + 25
     @links      = [] # stores references to linked neighboring cells
     @is_border  = (row == 0 || col == 0 || row == rows - 1 || col == cols - 1)
     @tile_path  = false

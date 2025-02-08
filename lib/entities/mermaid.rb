@@ -197,6 +197,7 @@ class Mermaid
       frames = ammo.blaster_frames
       scale = ammo.ammo_scale
       @maze.walls.each do |wall|
+        require "pry"; binding.pry
         if Gosu.distance(x + frames[ammo.current_frame].width/2 * scale,
                          y + frames[ammo.current_frame].height/2 * scale,
                          wall.x,
