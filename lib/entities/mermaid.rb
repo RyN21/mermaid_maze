@@ -6,18 +6,18 @@ class Mermaid
   TILE_SIZE      = Config::CELL_SIZE
   MERMAID_WIDTH  = 47
   MERMAID_HEIGHT = 64
-  MOVE_SPEED     = 7
+  MOVE_SPEED     = 3
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
   attr_reader :direction
 
   def initialize maze, character
-    @maze         = maze
-    @character    = Config::MERMAIDS[CHRACTERS_LIST[character]]
-    @up_frames    = @character[:up]
-    @down_frames  = @character[:down]
-    @left_frames  = @character[:left]
-    @right_frames = @character[:right]
-
+    @maze            = maze
+    @character       = Config::MERMAIDS[CHRACTERS_LIST[character]]
+    @blaster_sound   = Gosu::Sample.new("assets/sounds/blaster.mp3")
+    @up_frames       = @character[:up]
+    @down_frames     = @character[:down]
+    @left_frames     = @character[:left]
+    @right_frames    = @character[:right]
     @current_frame   = 0
     @frame_delay     = 7
     @frame_counter   = 0
@@ -25,7 +25,6 @@ class Mermaid
     @y               = 0
     @direction       = :down
     @mermaid_scale   = 0.75
-
     @ammo_count      = 1000
     @ammo_inventory  = []
     place_on_path
@@ -56,31 +55,31 @@ class Mermaid
 
 
   def move_left
-    if is_valid_move(@x - MOVE_SPEED - 12, @y)
+    @direction = :left
+    if is_valid_move(@x - MOVE_SPEED - 12, @y + 15)
       update_animation
       @x -= MOVE_SPEED
-      @direction = :left
     end
   end
   def move_right
-    if is_valid_move(@x + MOVE_SPEED, @y)
+    @direction = :right
+    if is_valid_move(@x + MOVE_SPEED, @y + 15)
       update_animation
       @x += MOVE_SPEED
-      @direction = :right
     end
   end
   def move_up
-    if is_valid_move(@x, @y - MOVE_SPEED - 7)
+    @direction = :up
+    if is_valid_move(@x - 10, @y - MOVE_SPEED - 7)
       update_animation
       @y -= MOVE_SPEED
-      @direction = :up
     end
   end
   def move_down
-    if is_valid_move(@x, @y + MOVE_SPEED + 20)
+    @direction = :down
+    if is_valid_move(@x - 10, @y + MOVE_SPEED + 20)
       update_animation
       @y += MOVE_SPEED
-      @direction = :down
     end
   end
 
@@ -121,17 +120,38 @@ class Mermaid
 
   def shoot
     if @ammo_count > 0
-      @ammo_inventory << Ammo.new(@x + MERMAID_WIDTH * @mermaid_scale, @y+ MERMAID_HEIGHT / 2 * @mermaid_scale, @direction)
+      @ammo_inventory << Ammo.new(@x + MERMAID_WIDTH / 2 * @mermaid_scale + 8, @y + MERMAID_HEIGHT / 2 * @mermaid_scale + 5, @direction)
       @ammo_count -= 1
+      @blaster_sound.play(volume = 0.10)
     end
   end
 
   def update_ammo
     @ammo_inventory.each(&:update)
-    @ammo_inventory.reject! do |ammo|
+    ammo_hits_wall
+    # @ammo_inventory.reject! do |ammo|
+      # is_valid_move_for_ammo(ammo.x + ammo.width / 2 * ammo.ammo_scale, ammo.y + ammo.height / 2 * ammo.ammo_scale)
       # ammo.x < 0 || ammo.x > Config::WINDOW_WIDTH || ammo.y < 0 || ammo.y > Config::WINDOW_HEIGHT
       # is_valid_move_for_ammo(ammo.x + 2, ammo.y + 2)
-      @maze.is_path?(ammo.x + 2, ammo.y + 2)
+      # @maze.is_path?()
+    # end
+  end
+
+  def ammo_hits_bubble(bubbles)
+    @ammo_inventory.each do |ammo|
+      frames = ammo.blaster_frames
+      scale = ammo.ammo_scale
+      x = ammo.x + frames[ammo.current_frame].width/2 * scale
+      y = ammo.y + frames[ammo.current_frame].height/2 * scale
+      bubbles.each do |bubble|
+        if Gosu.distance(x,
+                         y,
+                         bubble.x + bubble.frames[bubble.current_frame].width/2 * bubble.bubble_scale,
+                         bubble.y + bubble.frames[bubble.current_frame].height/2 * bubble.bubble_scale) < 22
+          bubble.pop unless bubble.popping? || bubble.popped?
+          @ammo_inventory.delete(ammo)
+        end
+      end
     end
   end
 
@@ -170,7 +190,20 @@ class Mermaid
     @maze.is_path?(grid_x, grid_y)
   end
 
-  # def is_valid_move_for_ammo(new_x, new_y)
-  #   @maze.is_path?()
-  # end
+  def ammo_hits_wall
+    @ammo_inventory.each do |ammo|
+      x = ammo.x
+      y = ammo.y
+      frames = ammo.blaster_frames
+      scale = ammo.ammo_scale
+      @maze.walls.each do |wall|
+        if Gosu.distance(x + frames[ammo.current_frame].width/2 * scale,
+                         y + frames[ammo.current_frame].height/2 * scale,
+                         wall.x,
+                         wall.y) < 50
+          @ammo_inventory.delete(ammo)
+        end
+      end
+    end
+  end
 end

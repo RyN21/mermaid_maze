@@ -1,9 +1,11 @@
 class CellSidewinder
-  attr_accessor :row, :col, :links, :is_border, :tile_path
+  attr_accessor :row, :col, :links, :is_border, :tile_path, :x, :y
 
   def initialize row, col, rows, cols
     @row        = row
     @col        = col
+    @x          = row + 25
+    @y          = col + 25
     @links      = [] # stores references to linked neighboring cells
     @is_border  = (row == 0 || col == 0 || row == rows - 1 || col == cols - 1)
     @tile_path  = false
@@ -12,7 +14,7 @@ class CellSidewinder
 
 
   # Link this cell to another cell ( BiDirectional )
-  def link cell
+  def link(cell)
     return if is_border # Do not link border cells
     @links << cell unless @links.include?(cell)
     cell.links << self unless cell.links.include?(self)
@@ -20,7 +22,7 @@ class CellSidewinder
 
 
   # Checks if this cell is linked to another
-  def linked? cell
+  def linked?(cell)
     @links.include? cell
   end
 
@@ -45,7 +47,7 @@ class CellSidewinder
 
 
 
-  def draw x, y, cell_size
+  def draw(x, y, cell_size)
     # Calculate scaling factors
     scale_x = cell_size.to_f / @tile_image.width
     scale_y = cell_size.to_f / @tile_image.height

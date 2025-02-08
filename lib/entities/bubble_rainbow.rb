@@ -4,21 +4,20 @@ class BubbleRainbow
   FRAME_COUNT = 5
   FRAME_DELAY = 100 # milliseconds
   POP_FRAME_DELAY = 50
-  attr_reader :x, :y, :frames
+  attr_reader :x, :y, :frames, :current_frame, :bubble_scale
 
-  def initialize(x, y)
-    @x = x
-    @y = y
-    @frames = Gosu::Image.load_tiles("assets/images/bubbles/bubble_rainbow_sheet.png", 127, 127, retro: true)
-    @pop_frames = Gosu::Image.load_tiles("assets/images/bubbles/green_pop.png", 119, 120, retro: true)
-    @pop_sound = Gosu::Sample.new("assets/sounds/bubble_pop_2.mp3")
-
-
-    @state = :idle
-    @current_frame = 0
+  def initialize x, y
+    @x                 = x
+    @y                 = y
+    @frames            = Gosu::Image.load_tiles("assets/images/bubbles/bubble_rainbow_sheet.png", 127, 127, retro: true)
+    @pop_frames        = Gosu::Image.load_tiles("assets/images/bubbles/green_pop.png", 119, 120, retro: true)
+    @pop_sound         = Gosu::Sample.new("assets/sounds/bubble_pop_2.mp3")
+    @state             = :idle
+    @current_frame     = 0
     @last_frame_change = Gosu.milliseconds
-    @rotation = 0
-    @pop_start_time = 0
+    @rotation          = 0
+    @pop_start_time    = 0
+    @bubble_scale      = 0.20
   end
 
   def update
@@ -45,9 +44,9 @@ class BubbleRainbow
   def draw
     case @state
     when :idle
-      @frames[@current_frame].draw_rot(@x, @y, 0, 0, 0.5, 0.5, 0.20, 0.20)
+      @frames[@current_frame].draw_rot(@x, @y, 0, 0, 0.5, 0.5, @bubble_scale, @bubble_scale)
     when :popping
-      @pop_frames[@current_frame].draw_rot(@x, @y, 0, 0, 0.5, 0.5, 0.20, 0.20)
+      @pop_frames[@current_frame].draw_rot(@x, @y, 0, 0, 0.5, 0.5, @bubble_scale, @bubble_scale)
     end
   end
 

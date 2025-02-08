@@ -10,7 +10,7 @@ require_relative "effects/pop"
 
 class GameWindow
 
-  def initialize(state_manager, character_index)
+  def initialize state_manager, character_index
     @state_manager = state_manager
     @character_index = character_index
     # Gosu.enable_undocumented_retrofication
@@ -34,6 +34,7 @@ class GameWindow
     @mermaid.update
     @mermaid.update_ammo
     @mermaid.collects_bubbles(@bubble_rainbows)
+    @mermaid.ammo_hits_bubble(@bubble_rainbows)
     @bubble_rainbows.reject! { |bubble| bubble.popped? }
     reset_maze if all_bubbles_collected?
   end
