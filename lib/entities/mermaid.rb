@@ -6,7 +6,7 @@ class Mermaid
   TILE_SIZE      = Config::CELL_SIZE
   MERMAID_WIDTH  = 47
   MERMAID_HEIGHT = 64
-  MOVE_SPEED     = 3
+  MOVE_SPEED     = 3.5
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
   attr_reader :direction, :score
 
