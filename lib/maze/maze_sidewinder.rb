@@ -108,8 +108,13 @@ class MazeSidewinder
     @grid[y][x].tile_path
   end
 
-  def cell_center(x, y)
 
+  def get_all_walls
+    @grid.each_with_index do |row, y|
+      row.each_with_index do |cell, x|
+        @walls << cell if !cell.tile_path
+      end
+    end
   end
 
 
@@ -209,14 +214,6 @@ class MazeSidewinder
     @grid.each_with_index do |row, y|
       row.each_with_index do |cell, x|
         return [y, x] if cell.tile_path
-      end
-    end
-  end
-
-  def get_all_walls
-    @grid.each_with_index do |row, y|
-      row.each_with_index do |cell, x|
-        @walls << cell if !cell.tile_path
       end
     end
   end

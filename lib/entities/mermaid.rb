@@ -128,8 +128,8 @@ class Mermaid
 
   def update_ammo
     @ammo_inventory.each(&:update)
+
     ammo_hits_wall
-    # @ammo_inventory.reject! do |ammo|
       # is_valid_move_for_ammo(ammo.x + ammo.width / 2 * ammo.ammo_scale, ammo.y + ammo.height / 2 * ammo.ammo_scale)
       # ammo.x < 0 || ammo.x > Config::WINDOW_WIDTH || ammo.y < 0 || ammo.y > Config::WINDOW_HEIGHT
       # is_valid_move_for_ammo(ammo.x + 2, ammo.y + 2)
@@ -146,8 +146,8 @@ class Mermaid
       bubbles.each do |bubble|
         if Gosu.distance(x,
                          y,
-                         bubble.x + bubble.frames[bubble.current_frame].width/2 * bubble.bubble_scale,
-                         bubble.y + bubble.frames[bubble.current_frame].height/2 * bubble.bubble_scale) < 22
+                         bubble.x + bubble.frames[bubble.current_frame].width / 2 * bubble.bubble_scale + 10,
+                         bubble.y + bubble.frames[bubble.current_frame].height / 2 * bubble.bubble_scale) < 22
           bubble.pop unless bubble.popping? || bubble.popped?
           @ammo_inventory.delete(ammo)
         end
@@ -159,6 +159,21 @@ class Mermaid
     @ammo_inventory.each(&:draw)
   end
 
+  def ammo_hits_wall
+    @ammo_inventory.each do |ammo|
+      @ammo_inventory.delete(ammo) if ammo_valid_move(ammo.x - 37, ammo.y - 10) == false
+    end
+    # @maze.walls.each do |wall|
+    #   @ammo_inventory.each do |ammo|
+    #     if Gosu.distance(ammo.x.to_i,
+    #                      ammo.y.to_i,
+    #                      wall.x,
+    #                      wall.y) < 10
+    #       @ammo_inventory.delete(ammo)
+    #     end
+    #   end
+    # end
+  end
 
 
   private
@@ -190,21 +205,10 @@ class Mermaid
     @maze.is_path?(grid_x, grid_y)
   end
 
-  def ammo_hits_wall
-    @ammo_inventory.each do |ammo|
-      x = ammo.x
-      y = ammo.y
-      frames = ammo.blaster_frames
-      scale = ammo.ammo_scale
-      @maze.walls.each do |wall|
-        require "pry"; binding.pry
-        if Gosu.distance(x + frames[ammo.current_frame].width/2 * scale,
-                         y + frames[ammo.current_frame].height/2 * scale,
-                         wall.x,
-                         wall.y) < 50
-          @ammo_inventory.delete(ammo)
-        end
-      end
-    end
+  def ammo_valid_move(new_x, new_y)
+    grid_x = (new_x + 90 * 0.40) / TILE_SIZE
+    grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+    @maze.is_path?(grid_x, grid_y)
   end
+
 end

@@ -1,6 +1,7 @@
 class Ammo
   AMMO_SHEET_WIDTH  = 591
   AMMO_SHEET_HEIGHT = 60
+
   attr_reader :x, :y, :width, :height, :blaster_frames, :current_frame, :ammo_scale
 
   def initialize x, y, direction
@@ -16,6 +17,7 @@ class Ammo
     @last_frame_change = Gosu.milliseconds
     @rotation          = 0
     @ammo_scale        = 0.40
+    @state             = :active
   end
 
   def update
