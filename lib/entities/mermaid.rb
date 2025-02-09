@@ -198,3 +198,43 @@ class Mermaid
   end
 
 end
+
+
+
+#### THIS WAY PREVENTS FOX FROM MOVING DIAGONALLY
+# def update
+#   direction = nil
+#
+#   if Gosu.button_down? Gosu::KB_LEFT
+#     direction = :left
+#   elsif Gosu.button_down? Gosu::KB_RIGHT
+#     direction = :right
+#   elsif Gosu.button_down? Gosu::KB_UP
+#     direction = :up
+#   elsif Gosu.button_down? Gosu::KB_DOWN
+#     direction = :down
+#   end
+#   move direction if direction
+# end
+#
+#
+# def move direction
+#   return unless direction
+#   case direction
+#   when :left
+#     update_animation
+#     @x -= 4
+#     @direction = @fox_scale
+#   when :right
+#     update_animation
+#     @x += 4
+#     @direction = -@fox_scale
+#     @x - @frames[@current_frame].width
+#   when :up
+#     update_animation
+#     @y -= 4
+#   when :down
+#     update_animation
+#     @y += 4
+#   end
+# end
