@@ -11,18 +11,18 @@ require_relative "effects/pop"
 class GameWindow
 
   def initialize state_manager, character_index
-    @state_manager = state_manager
-    @character_index = character_index
+    @state_manager    = state_manager
+    @character_index  = character_index
     # Gosu.enable_undocumented_retrofication
 
-    @background_color   = Config::COLORS[:background]
-    @background_image   = Gosu::Image.new("assets/images/background_ocean.jpg")
-    @maze               = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
-    @mermaid            = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
-    @bubble_rainbows    = Array.new
-
-    @level_up_sound     = Gosu::Sample.new("assets/sounds/level_up.mp3")
-
+    @background_color = Config::COLORS[:background]
+    @background_image = Gosu::Image.new("assets/images/background_ocean.jpg")
+    @maze             = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
+    @mermaid          = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
+    @bubble_rainbows  = Array.new
+    @font             = Gosu::Font.new(30)
+    @level_up_sound   = Gosu::Sample.new("assets/sounds/level_up.mp3")
+    @score            = 0
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
     # @gold_coins_anim    = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25 )
     # @silver_coins_anim  = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
@@ -35,6 +35,7 @@ class GameWindow
     @mermaid.update_ammo
     @mermaid.collects_bubbles(@bubble_rainbows)
     @mermaid.ammo_hits_bubble(@bubble_rainbows)
+    score
     @bubble_rainbows.reject! { |bubble| bubble.popped? }
     reset_maze if all_bubbles_collected?
   end
@@ -43,8 +44,9 @@ class GameWindow
   def draw
     # draw_rect 0,0, Config::WINDOW_WIDTH, Config::WINDOW_HEIGHT, @background_color
     @background_image.draw 0, 0, 0, 0.20, 0.20
-
     @maze.draw(Config::CELL_SIZE)
+    @font.draw("Score: #{@score}", 10, 10, 0, 1, 1)
+
     @mermaid.draw
     @mermaid.draw_ammo
     @bubble_rainbows.each(&:draw)
@@ -76,6 +78,7 @@ class GameWindow
     @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
     reset_bubbles
+    @score = 0
   end
 
   def button_down(id)
@@ -84,6 +87,12 @@ class GameWindow
       @state_manager.switch_to(Menu.new(@state_manager))
     when Gosu::KB_SPACE
       @mermaid.shoot
+    end
+  end
+
+  def score
+    @bubble_rainbows.each do |bubble|
+      @score += 1 if bubble.state == :popped
     end
   end
 end

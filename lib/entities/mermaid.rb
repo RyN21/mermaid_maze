@@ -8,7 +8,7 @@ class Mermaid
   MERMAID_HEIGHT = 64
   MOVE_SPEED     = 3
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
-  attr_reader :direction
+  attr_reader :direction, :score
 
   def initialize maze, character
     @maze            = maze
@@ -27,6 +27,7 @@ class Mermaid
     @mermaid_scale   = 0.75
     @ammo_count      = 1000
     @ammo_inventory  = []
+    @score           = 0
     place_on_path
   end
 
@@ -115,6 +116,7 @@ class Mermaid
                        bubble.x, bubble.y - 10) < 30
         bubble.pop unless bubble.popping? || bubble.popped?
       end
+      @sc
     end
   end
 
