@@ -128,13 +128,7 @@ class Mermaid
 
   def update_ammo
     @ammo_inventory.each(&:update)
-
     ammo_hits_wall
-      # is_valid_move_for_ammo(ammo.x + ammo.width / 2 * ammo.ammo_scale, ammo.y + ammo.height / 2 * ammo.ammo_scale)
-      # ammo.x < 0 || ammo.x > Config::WINDOW_WIDTH || ammo.y < 0 || ammo.y > Config::WINDOW_HEIGHT
-      # is_valid_move_for_ammo(ammo.x + 2, ammo.y + 2)
-      # @maze.is_path?()
-    # end
   end
 
   def ammo_hits_bubble(bubbles)
@@ -163,16 +157,6 @@ class Mermaid
     @ammo_inventory.each do |ammo|
       @ammo_inventory.delete(ammo) if ammo_valid_move(ammo.x - 37, ammo.y - 10) == false
     end
-    # @maze.walls.each do |wall|
-    #   @ammo_inventory.each do |ammo|
-    #     if Gosu.distance(ammo.x.to_i,
-    #                      ammo.y.to_i,
-    #                      wall.x,
-    #                      wall.y) < 10
-    #       @ammo_inventory.delete(ammo)
-    #     end
-    #   end
-    # end
   end
 
 
