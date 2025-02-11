@@ -2,7 +2,7 @@ class Ammo
   AMMO_SHEET_WIDTH  = 591
   AMMO_SHEET_HEIGHT = 60
 
-  attr_reader :x, :y, :width, :height, :blaster_frames, :current_frame, :ammo_scale
+  attr_reader :x, :y, :width, :height, :blaster_frames, :current_frame, :ammo_scale, :direction
 
   def initialize x, y, direction
     @x                 = x
@@ -12,7 +12,7 @@ class Ammo
     @direction         = direction
     @speed             = 5
     @blaster_frames    = Gosu::Image.load_tiles("assets/images/ammo/blaster_1.png", 98, 60, retro: true)
-    @blaster_color     = rand(1..3)
+    @blaster_color     = rand(1..5)
     @impact_frames     = Gosu::Image.load_tiles("assets/images/ammo/explosion_#{@blaster_color}.png", 40, 73, retro: true)
     @current_frame     = 0
     @frame_delay       = 100

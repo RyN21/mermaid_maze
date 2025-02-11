@@ -158,7 +158,7 @@ class Mermaid
 
   def ammo_hits_wall
     @ammo_inventory.each do |ammo|
-      if ammo_valid_move(ammo.x - 37, ammo.y - 10) == false
+      if ammo_valid_move(ammo.x - 37, ammo.y - 10, ammo.direction) == false
         ammo.explode unless ammo.exploding? || ammo.dead?
       end
     end
@@ -194,9 +194,22 @@ class Mermaid
     @maze.is_path?(grid_x, grid_y)
   end
 
-  def ammo_valid_move(new_x, new_y)
-    grid_x = (new_x + 90 * 0.40) / TILE_SIZE
-    grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+  def ammo_valid_move(new_x, new_y, direction)
+    case direction
+    when :left
+      grid_x = (new_x + 60 * 0.40) / TILE_SIZE
+      grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+    when :right
+      grid_x = (new_x + 120 * 0.40) / TILE_SIZE
+      grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+    when :up
+      grid_x = (new_x + 120 * 0.40) / TILE_SIZE
+      grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+    when :down
+      grid_x = (new_x + 120 * 0.40) / TILE_SIZE
+      grid_y = (new_y + 100 / 2 * 0.40) / TILE_SIZE
+    end
+    # grid_x = (new_x + 90 * 0.40) / TILE_SIZE
     @maze.is_path?(grid_x, grid_y)
   end
 
