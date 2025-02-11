@@ -52,6 +52,8 @@ class Mermaid
     move_right if Gosu.button_down? Gosu::KB_RIGHT
     move_up if Gosu.button_down? Gosu::KB_UP
     move_down if Gosu.button_down? Gosu::KB_DOWN
+
+    @ammo_inventory.reject! { |ammo| ammo.dead?}
   end
 
 
@@ -116,7 +118,6 @@ class Mermaid
                        bubble.x, bubble.y - 10) < 30
         bubble.pop unless bubble.popping? || bubble.popped?
       end
-      @sc
     end
   end
 
@@ -157,7 +158,9 @@ class Mermaid
 
   def ammo_hits_wall
     @ammo_inventory.each do |ammo|
-      @ammo_inventory.delete(ammo) if ammo_valid_move(ammo.x - 37, ammo.y - 10) == false
+      if ammo_valid_move(ammo.x - 37, ammo.y - 10) == false
+        ammo.explode unless ammo.exploding? || ammo.dead?
+      end
     end
   end
 
