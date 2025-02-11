@@ -11,8 +11,9 @@ class Ammo
     @height            = 60
     @direction         = direction
     @speed             = 5
-    @blaster_frames    = Gosu::Image.load_tiles("assets/images/blaster_1.png", 98, 60, retro: true)
-    @impact_frames     = Gosu::Image.load_tiles("assets/images/explosion_.png", 40, 73, retro: true)
+    @blaster_frames    = Gosu::Image.load_tiles("assets/images/ammo/blaster_1.png", 98, 60, retro: true)
+    @blaster_color     = rand(1..3)
+    @impact_frames     = Gosu::Image.load_tiles("assets/images/ammo/explosion_#{@blaster_color}.png", 40, 73, retro: true)
     @current_frame     = 0
     @frame_delay       = 100
     @last_frame_change = Gosu.milliseconds
