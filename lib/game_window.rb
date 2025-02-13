@@ -46,8 +46,8 @@ class GameWindow
     @background_image.draw 0, 0, 0, 0.20, 0.20
     @maze.draw(Config::CELL_SIZE)
     @font.draw("Score: #{@score}", 10, 10, 0, 1, 1)
-    overlay_color = Gosu::Color.rgba(0, 0, 255, 128)
-    Gosu.draw_rect(0, 0, 800, 600, overlay_color, z = 0)
+    # overlay_color = Gosu::Color.rgba(0, 125, 0, 75)
+    # Gosu.draw_rect(0, 0, 800, 600, overlay_color, z = 0)
     @mermaid.draw
     @mermaid.draw_ammo
     @bubble_rainbows.each(&:draw)

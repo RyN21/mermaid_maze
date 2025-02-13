@@ -209,7 +209,6 @@ class Mermaid
       grid_x = (new_x + 90 * 0.40) / TILE_SIZE
       grid_y = (new_y + 72 * 0.40) / TILE_SIZE
     end
-    # grid_x = (new_x + 90 * 0.40) / TILE_SIZE
     @maze.is_path?(grid_x, grid_y)
   end
 

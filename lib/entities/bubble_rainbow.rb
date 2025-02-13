@@ -3,7 +3,7 @@ class BubbleRainbow
   SHEET_HEIGHT= 255
   FRAME_COUNT = 5
   FRAME_DELAY = 100 # milliseconds
-  POP_FRAME_DELAY = 50
+  POP_FRAME_DELAY = 30
   attr_reader :x, :y, :frames, :current_frame, :bubble_scale, :state
 
   def initialize x, y
