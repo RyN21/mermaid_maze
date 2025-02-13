@@ -197,17 +197,17 @@ class Mermaid
   def ammo_valid_move(new_x, new_y, direction)
     case direction
     when :left
-      grid_x = (new_x + 60 * 0.40) / TILE_SIZE
-      grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+      grid_x = (new_x + 58 * 0.40) / TILE_SIZE
+      grid_y = (new_y + 25 * 0.40) / TILE_SIZE
     when :right
-      grid_x = (new_x + 120 * 0.40) / TILE_SIZE
-      grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+      grid_x = (new_x + 134 * 0.40) / TILE_SIZE
+      grid_y = (new_y + 25 * 0.40) / TILE_SIZE
     when :up
-      grid_x = (new_x + 120 * 0.40) / TILE_SIZE
-      grid_y = (new_y + 50 / 2 * 0.40) / TILE_SIZE
+      grid_x = (new_x + 90 * 0.40) / TILE_SIZE
+      grid_y = (new_y - 5) / TILE_SIZE
     when :down
-      grid_x = (new_x + 120 * 0.40) / TILE_SIZE
-      grid_y = (new_y + 100 / 2 * 0.40) / TILE_SIZE
+      grid_x = (new_x + 90 * 0.40) / TILE_SIZE
+      grid_y = (new_y + 72 * 0.40) / TILE_SIZE
     end
     # grid_x = (new_x + 90 * 0.40) / TILE_SIZE
     @maze.is_path?(grid_x, grid_y)
