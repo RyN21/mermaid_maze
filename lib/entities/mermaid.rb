@@ -1,4 +1,3 @@
-require_relative "../effects/pop"
 require "./lib/entities/ammo"
 
 

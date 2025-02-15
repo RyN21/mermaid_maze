@@ -4,7 +4,6 @@ require_relative "maze/maze_sidewinder"
 require_relative "maze/cell_sidewinder"
 require_relative "entities/coin"
 require_relative "entities/bubble_rainbow"
-require_relative "effects/pop"
 
 
 class GameWindow
