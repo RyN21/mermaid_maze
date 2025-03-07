@@ -27,6 +27,8 @@ class Mermaid
     @ammo_count      = 1000
     @ammo_inventory  = []
     @score           = 0
+    @shoot_delay     = 225
+    @last_shot       = 0
     place_on_path
   end
 
@@ -121,10 +123,13 @@ class Mermaid
   end
 
   def shoot
-    if @ammo_count > 0
+    current_time = Gosu.milliseconds
+    if current_time > @last_shot + @shoot_delay
+      @last_shot = Gosu.milliseconds
       @ammo_inventory << Ammo.new(@x + MERMAID_WIDTH / 2 * @mermaid_scale + 8, @y + MERMAID_HEIGHT / 2 * @mermaid_scale + 5, @direction)
       @ammo_count -= 1
       @blaster_sound.play(volume = 0.10)
+      # require "pry"; binding.pry
     end
   end
 
