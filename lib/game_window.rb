@@ -1,5 +1,6 @@
 require_relative "../config/settings"
 require_relative "entities/mermaid"
+require_relative "entities/crab"
 require_relative "maze/maze_sidewinder"
 require_relative "maze/cell_sidewinder"
 require_relative "entities/coin"
