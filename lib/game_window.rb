@@ -18,6 +18,7 @@ class GameWindow
     @background_image = Gosu::Image.new("assets/images/background_ocean.jpg")
     @maze             = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid          = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
+    @crab             = Crab.new(@maze)
     @bubble_rainbows  = Array.new
     @font             = Gosu::Font.new(30)
     @level_up_sound   = Gosu::Sample.new("assets/sounds/level_up.mp3")
@@ -50,6 +51,7 @@ class GameWindow
     # Gosu.draw_rect(0, 0, 800, 600, overlay_color, z = 0)
     @mermaid.draw
     @mermaid.draw_ammo
+    @crab.draw
     @bubble_rainbows.each(&:draw)
   end
 
