@@ -32,6 +32,7 @@ class GameWindow
   def update
     @bubble_rainbows.each(&:update)
     @mermaid.update
+    @crab.update
     @mermaid.update_ammo
     @mermaid.collects_bubbles(@bubble_rainbows)
     @mermaid.ammo_hits_bubble(@bubble_rainbows)
