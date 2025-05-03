@@ -81,6 +81,7 @@ class GameWindow
     @level_up_sound.play
     @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
+    @crab    = Crab.new(@maze)
     reset_bubbles
     @score = 0
   end
