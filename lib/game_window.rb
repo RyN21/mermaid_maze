@@ -14,11 +14,15 @@ class GameWindow
     @character_index  = character_index
     # Gosu.enable_undocumented_retrofication
 
+    @level            = 1
     @background_color = Config::COLORS[:background]
     @background_image = Gosu::Image.new("assets/images/background_ocean.jpg")
     @maze             = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid          = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
-    @crab             = Crab.new(@maze)
+    @crabs            = []
+    @level.times do
+      @crabs << Crab.new(@maze)
+    end
     @bubble_rainbows  = Array.new
     @font             = Gosu::Font.new(30)
     @level_up_sound   = Gosu::Sample.new("assets/sounds/level_up.mp3")
@@ -32,7 +36,9 @@ class GameWindow
   def update
     @bubble_rainbows.each(&:update)
     @mermaid.update
-    @crab.update
+    @crabs.each do |crab|
+      crab.update
+    end
     @mermaid.update_ammo
     @mermaid.collects_bubbles(@bubble_rainbows)
     @mermaid.ammo_hits_bubble(@bubble_rainbows)
@@ -52,7 +58,9 @@ class GameWindow
     # Gosu.draw_rect(0, 0, 800, 600, overlay_color, z = 0)
     @mermaid.draw
     @mermaid.draw_ammo
-    @crab.draw
+    @crabs.each do |crab|
+      crab.draw
+    end
     @bubble_rainbows.each(&:draw)
   end
 
@@ -78,10 +86,14 @@ class GameWindow
   end
 
   def reset_maze
+    @level += 1
     @level_up_sound.play
     @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
     @mermaid = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
-    @crab    = Crab.new(@maze)
+    @crabs   = []
+    @level.times do
+      @crabs << Crab.new(@maze)
+    end
     reset_bubbles
     @score = 0
   end

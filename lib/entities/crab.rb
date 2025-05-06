@@ -95,16 +95,6 @@ class Crab
     tile = @maze.paths.pop
     @x = tile.col * 50
     @y = tile.row * 50
-    # require "pry"; binding.pry
-    # @maze.grid.each_with_index do |row, y|
-    #   row.each_with_index do |cell, x|
-    #     if cell.tile_path
-    #       @x = x + 50
-    #       @y = y + 50
-    #       return
-    #     end
-    #   end
-    # end
   end
 
   def is_valid_move(new_x, new_y)
