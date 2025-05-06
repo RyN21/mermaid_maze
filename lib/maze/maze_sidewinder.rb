@@ -2,13 +2,14 @@ require_relative "cell_sidewinder"
 
 class MazeSidewinder
   TILE_SIZE = Config::CELL_SIZE
-  attr_reader :grid, :walls
+  attr_reader :grid, :walls, :paths
 
   def initialize(rows, cols)
     @rows   = rows
     @cols   = cols
     @grid   = Array.new(rows) { |row| Array.new(cols) { |col| CellSidewinder.new(row, col, rows, cols) } }
     @walls  = []
+    @paths  = []
     generate_maze
   end
 
@@ -35,6 +36,7 @@ class MazeSidewinder
     connect_isolated_paths
     update_all_tiles
     get_all_walls
+    get_all_paths
   end
 
 
@@ -113,6 +115,14 @@ class MazeSidewinder
     @grid.each_with_index do |row, y|
       row.each_with_index do |cell, x|
         @walls << cell if !cell.tile_path
+      end
+    end
+  end
+
+  def get_all_paths
+    @grid.each_with_index do |row, y|
+      row.each_with_index do |cell, x|
+        @paths << cell if cell.tile_path
       end
     end
   end

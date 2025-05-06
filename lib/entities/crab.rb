@@ -92,15 +92,19 @@ class Crab
 
 
   def place_on_path
-    @maze.grid.each_with_index do |row, y|
-      row.each_with_index do |cell, x|
-        if cell.tile_path
-          @x = x + 50
-          @y = y + 50
-          return
-        end
-      end
-    end
+    tile = @maze.paths.pop
+    @x = tile.col * 50
+    @y = tile.row * 50
+    # require "pry"; binding.pry
+    # @maze.grid.each_with_index do |row, y|
+    #   row.each_with_index do |cell, x|
+    #     if cell.tile_path
+    #       @x = x + 50
+    #       @y = y + 50
+    #       return
+    #     end
+    #   end
+    # end
   end
 
   def is_valid_move(new_x, new_y)
@@ -164,23 +168,23 @@ end
 #
 #   private
 #
-  def move
-    # Use a wider "turn zone" to allow for turns at intersections
-    if at_tile_center?(12) && at_intersection?
-      choose_new_direction_at_intersection
-    end
-
-    if can_continue_moving?
-      move_forward
-      @stuck_counter = 0
-    else
-      @stuck_counter += 1
-      choose_new_direction
-    end
-
-    avoid_loops
-    record_position
-  end
+  # def move
+  #   # Use a wider "turn zone" to allow for turns at intersections
+  #   if at_tile_center?(12) && at_intersection?
+  #     choose_new_direction_at_intersection
+  #   end
+  #
+  #   if can_continue_moving?
+  #     move_forward
+  #     @stuck_counter = 0
+  #   else
+  #     @stuck_counter += 1
+  #     choose_new_direction
+  #   end
+  #
+  #   avoid_loops
+  #   record_position
+  # end
 #
 #   def at_tile_center?(threshold = 20)
 #     crab_center_x = @x + CRAB_WIDTH * CRAB_SCALE / 2
@@ -234,31 +238,31 @@ end
 #     end
 #   end
 #
-  def can_continue_moving?
-    case @current_direction
-    when :left
-      valid_move?(@x - @speed, @y)
-    when :right
-      valid_move?(@x + @speed + CRAB_WIDTH * CRAB_SCALE, @y)
-    when :up
-      valid_move?(@x, @y - @speed)
-    when :down
-      valid_move?(@x, @y + @speed + CRAB_HEIGHT * CRAB_SCALE)
-    end
-  end
-
-  def move_forward
-    case @current_direction
-    when :left
-      @x -= @speed
-    when :right
-      @x += @speed
-    when :up
-      @y -= @speed
-    when :down
-      @y += @speed
-    end
-  end
+  # def can_continue_moving?
+  #   case @current_direction
+  #   when :left
+  #     valid_move?(@x - @speed, @y)
+  #   when :right
+  #     valid_move?(@x + @speed + CRAB_WIDTH * CRAB_SCALE, @y)
+  #   when :up
+  #     valid_move?(@x, @y - @speed)
+  #   when :down
+  #     valid_move?(@x, @y + @speed + CRAB_HEIGHT * CRAB_SCALE)
+  #   end
+  # end
+  #
+  # def move_forward
+  #   case @current_direction
+  #   when :left
+  #     @x -= @speed
+  #   when :right
+  #     @x += @speed
+  #   when :up
+  #     @y -= @speed
+  #   when :down
+  #     @y += @speed
+  #   end
+  # end
 #
 #   def choose_new_direction
 #     possible_dirs = @directions.reject { |dir| opposite_direction?(dir) }
@@ -298,19 +302,19 @@ end
 #     end
 #   end
 #
-  def valid_move?(x, y)
-    # Check 3 points across the crab's leading edge for collision
-    case @current_direction
-    when :left, :right
-      [0, CRAB_HEIGHT * CRAB_SCALE / 2, CRAB_HEIGHT * CRAB_SCALE - 1].all? do |offset|
-        tile_walkable?(x, @y + offset)
-      end
-    when :up, :down
-      [0, CRAB_WIDTH * CRAB_SCALE / 2, CRAB_WIDTH * CRAB_SCALE - 1].all? do |offset|
-        tile_walkable?(@x + offset, y)
-      end
-    end
-  end
+  # def valid_move?(x, y)
+  #   # Check 3 points across the crab's leading edge for collision
+  #   case @current_direction
+  #   when :left, :right
+  #     [0, CRAB_HEIGHT * CRAB_SCALE / 2, CRAB_HEIGHT * CRAB_SCALE - 1].all? do |offset|
+  #       tile_walkable?(x, @y + offset)
+  #     end
+  #   when :up, :down
+  #     [0, CRAB_WIDTH * CRAB_SCALE / 2, CRAB_WIDTH * CRAB_SCALE - 1].all? do |offset|
+  #       tile_walkable?(@x + offset, y)
+  #     end
+  #   end
+  # end
 #
 #   def tile_walkable?(x, y)
 #     grid_x = (x / TILE_SIZE).to_i
