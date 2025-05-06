@@ -8,9 +8,9 @@ class Crab
     @crab_scale        = 0.50
     @x                 = 0
     @y                 = 0
-    @x_center          = @x + CRAB_WIDTH * @crab_scale
-    @y_center          = @y + CRAB_HEIGHT * @crab_scale
-    @speed             = 3
+    @x_center          = @x + CRAB_WIDTH * @crab_scale / 2
+    @y_center          = @y + CRAB_HEIGHT * @crab_scale / 2
+    @speed             = 2
     @crab_frames       = Gosu::Image.load_tiles("assets/images/crab/crab_sprite.png", 64, 64, retro: true)
     @animation_frames  = {
       up: [@crab_frames[0], @crab_frames[1]],
@@ -39,70 +39,50 @@ class Crab
   end
 
   def move
+    if can_continue_moving?
+      move_forward
+    else
+      change_direction
+    end
+  end
+
+  def can_continue_moving?
     case @current_direction
     when :up
-      move_up
+      is_valid_move(@x - 10, @y - @speed - 10)
     when :down
-      move_down
+      is_valid_move(@x - 10, @y + @speed + 10)
     when :left
-      move_left
+      is_valid_move(@x - @speed - 25, @y - 10)
     when :right
-      move_right
+      is_valid_move(@x + @speed - 5, @y - 10)
     end
-  end
 
-  def move_left
-    if is_valid_move(@x - @speed - 25, @y)
-      @x -= @speed
-    else
-      change_direction(:left)
-    end
   end
-
-  def move_right
-    if is_valid_move(@x + @speed - 5, @y)
-      @x += @speed
-    else
-      change_direction(:right)
-    end
-  end
-
-  def move_up
-    if is_valid_move(@x, @y - @speed - 10)
+  def move_forward
+    case @current_direction
+    when :up
       @y -= @speed
-    else
-      change_direction(:up)
-    end
-  end
-
-  def move_down
-    if is_valid_move(@x, @y + @speed + 10)
+    when :down
       @y += @speed
-    else
-      change_direction(:down)
+    when :left
+      @x -= @speed
+    when :right
+      @x += @speed
     end
   end
 
-  def change_direction(current_direction)
+  def change_direction
+    # @current_direction = @directions.sample
     index = rand(0..2)
-    @directions.push(@directions.delete_at(@directions.index(current_direction)))
+    @directions.push(@directions.delete_at(@directions.index(@current_direction)))
     @current_direction = @directions[index]
   end
 
   def update_animation
     @frame_counter += 1
     if @frame_counter >= @frame_delay
-      frames = case @current_direction
-               when :up
-                 [@crab_frames[0], @crab_frames[1]]
-               when :down then
-                 [@crab_frames[2], @crab_frames[3]]
-               when :left then
-                 [@crab_frames[4], @crab_frames[5]]
-               when :right then
-                 [@crab_frames[6], @crab_frames[7]]
-               end
-      @current_frame = (@current_frame + 1) % frames.size
+      @current_frame = (@current_frame + 1) % 2
       @frame_counter = 0
     end
   end
@@ -184,23 +164,23 @@ end
 #
 #   private
 #
-#   def move
-#     # Use a wider "turn zone" to allow for turns at intersections
-#     if at_tile_center?(12) && at_intersection?
-#       choose_new_direction_at_intersection
-#     end
-#
-#     if can_continue_moving?
-#       move_forward
-#       @stuck_counter = 0
-#     else
-#       @stuck_counter += 1
-#       choose_new_direction
-#     end
-#
-#     avoid_loops
-#     record_position
-#   end
+  def move
+    # Use a wider "turn zone" to allow for turns at intersections
+    if at_tile_center?(12) && at_intersection?
+      choose_new_direction_at_intersection
+    end
+
+    if can_continue_moving?
+      move_forward
+      @stuck_counter = 0
+    else
+      @stuck_counter += 1
+      choose_new_direction
+    end
+
+    avoid_loops
+    record_position
+  end
 #
 #   def at_tile_center?(threshold = 20)
 #     crab_center_x = @x + CRAB_WIDTH * CRAB_SCALE / 2
@@ -254,31 +234,31 @@ end
 #     end
 #   end
 #
-#   def can_continue_moving?
-#     case @current_direction
-#     when :left
-#       valid_move?(@x - @speed, @y)
-#     when :right
-#       valid_move?(@x + @speed + CRAB_WIDTH * CRAB_SCALE, @y)
-#     when :up
-#       valid_move?(@x, @y - @speed)
-#     when :down
-#       valid_move?(@x, @y + @speed + CRAB_HEIGHT * CRAB_SCALE)
-#     end
-#   end
-#
-#   def move_forward
-#     case @current_direction
-#     when :left
-#       @x -= @speed
-#     when :right
-#       @x += @speed
-#     when :up
-#       @y -= @speed
-#     when :down
-#       @y += @speed
-#     end
-#   end
+  def can_continue_moving?
+    case @current_direction
+    when :left
+      valid_move?(@x - @speed, @y)
+    when :right
+      valid_move?(@x + @speed + CRAB_WIDTH * CRAB_SCALE, @y)
+    when :up
+      valid_move?(@x, @y - @speed)
+    when :down
+      valid_move?(@x, @y + @speed + CRAB_HEIGHT * CRAB_SCALE)
+    end
+  end
+
+  def move_forward
+    case @current_direction
+    when :left
+      @x -= @speed
+    when :right
+      @x += @speed
+    when :up
+      @y -= @speed
+    when :down
+      @y += @speed
+    end
+  end
 #
 #   def choose_new_direction
 #     possible_dirs = @directions.reject { |dir| opposite_direction?(dir) }
@@ -318,19 +298,19 @@ end
 #     end
 #   end
 #
-#   def valid_move?(x, y)
-#     # Check 3 points across the crab's leading edge for collision
-#     case @current_direction
-#     when :left, :right
-#       [0, CRAB_HEIGHT * CRAB_SCALE / 2, CRAB_HEIGHT * CRAB_SCALE - 1].all? do |offset|
-#         tile_walkable?(x, @y + offset)
-#       end
-#     when :up, :down
-#       [0, CRAB_WIDTH * CRAB_SCALE / 2, CRAB_WIDTH * CRAB_SCALE - 1].all? do |offset|
-#         tile_walkable?(@x + offset, y)
-#       end
-#     end
-#   end
+  def valid_move?(x, y)
+    # Check 3 points across the crab's leading edge for collision
+    case @current_direction
+    when :left, :right
+      [0, CRAB_HEIGHT * CRAB_SCALE / 2, CRAB_HEIGHT * CRAB_SCALE - 1].all? do |offset|
+        tile_walkable?(x, @y + offset)
+      end
+    when :up, :down
+      [0, CRAB_WIDTH * CRAB_SCALE / 2, CRAB_WIDTH * CRAB_SCALE - 1].all? do |offset|
+        tile_walkable?(@x + offset, y)
+      end
+    end
+  end
 #
 #   def tile_walkable?(x, y)
 #     grid_x = (x / TILE_SIZE).to_i
@@ -377,13 +357,13 @@ end
 #         end
 #       end
 #
-#       def update_animation
-#         @frame_counter += 1
-#         if @frame_counter >= @frame_delay
-#           @current_frame = (@current_frame + 1) % 2
-#           @frame_counter = 0
-#         end
-#       end
+      # def update_animation
+      #   @frame_counter += 1
+      #   if @frame_counter >= @frame_delay
+      #     @current_frame = (@current_frame + 1) % 2
+      #     @frame_counter = 0
+      #   end
+      # end
 #
 #       def place_on_path
 #         walkable_tiles = []
