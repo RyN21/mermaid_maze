@@ -5,6 +5,7 @@ class Crab
   CRAB_HEIGHT  = 64
   def initialize maze
     @maze              = maze
+    @lives             = 3
     @crab_scale        = 0.50
     @x                 = 0
     @y                 = 0
@@ -23,8 +24,6 @@ class Crab
     @frame_counter     = 0
     @directions        = [:up, :down, :left, :right]
     @current_direction = :down
-    # @path_memory       = []
-    # @stuck_counter     = 0
     place_on_path
   end
 

@@ -11,6 +11,7 @@ class Mermaid
 
   def initialize maze, character
     @maze            = maze
+    @lives           = 3
     @character       = Config::MERMAIDS[CHRACTERS_LIST[character]]
     @blaster_sound   = Gosu::Sample.new("assets/sounds/blaster.mp3")
     @up_frames       = @character[:up]
@@ -167,6 +168,12 @@ class Mermaid
       end
     end
   end
+
+  # def ammo_hits_crab
+  #   @ammo_inventory.each do |ammo|
+  #
+  #   end
+  # end
 
 
   private

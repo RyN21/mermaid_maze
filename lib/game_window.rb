@@ -27,6 +27,7 @@ class GameWindow
     @font             = Gosu::Font.new(30)
     @level_up_sound   = Gosu::Sample.new("assets/sounds/level_up.mp3")
     @score            = 0
+    @paused           = false
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
     # @gold_coins_anim    = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25 )
     # @silver_coins_anim  = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
@@ -34,6 +35,8 @@ class GameWindow
   end
 
   def update
+    return if @paused
+
     @bubble_rainbows.each(&:update)
     @mermaid.update
     @crabs.each do |crab|
@@ -104,6 +107,8 @@ class GameWindow
       @state_manager.switch_to(Menu.new(@state_manager))
     when Gosu::KB_SPACE
       @mermaid.shoot
+    when Gosu::KB_P
+      @paused = !@paused
     end
   end
 
