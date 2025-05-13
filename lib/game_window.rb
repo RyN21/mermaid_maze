@@ -26,6 +26,7 @@ class GameWindow
     @bubble_rainbows  = Array.new
     @font             = Gosu::Font.new(30)
     @level_up_sound   = Gosu::Sample.new("assets/sounds/level_up.mp3")
+    @you_lose   = Gosu::Sample.new("assets/sounds/level_up.mp3")
     @score            = 0
     @paused           = false
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)
@@ -45,9 +46,10 @@ class GameWindow
     @mermaid.update_ammo
     @mermaid.collects_bubbles(@bubble_rainbows)
     @mermaid.ammo_hits_bubble(@bubble_rainbows)
+    @mermaid.makes_contact_with_crab(@crabs)
     score
     @bubble_rainbows.reject! { |bubble| bubble.popped? }
-    reset_maze if all_bubbles_collected?
+    next_level_reset_maze if all_bubbles_collected?
   end
 
 
@@ -57,6 +59,7 @@ class GameWindow
     @background_image.draw 0, 0, 0, 0.20, 0.20
     @maze.draw(Config::CELL_SIZE)
     @font.draw("Score: #{@score}", 10, 10, 0, 1, 1)
+    @font.draw("Lives: #{@mermaid.lives}", 700, 10, 0, 1, 1)
     # overlay_color = Gosu::Color.rgba(0, 125, 0, 75)
     # Gosu.draw_rect(0, 0, 800, 600, overlay_color, z = 0)
     @mermaid.draw
@@ -88,11 +91,12 @@ class GameWindow
     @bubble_rainbows.all?(&:popped?)
   end
 
-  def reset_maze
+  def next_level_reset_maze
     @level += 1
+    lives = @mermaid.lives += 1
     @level_up_sound.play
     @maze    = MazeSidewinder.new(Config::GRID_ROWS, Config::GRID_COLS)
-    @mermaid = Mermaid.new(@maze, @character_index) # 0 for first row mermaid
+    @mermaid = Mermaid.new(@maze, @character_index, lives) # 0 for first row mermaid
     @crabs   = []
     @level.times do
       @crabs << Crab.new(@maze)
@@ -116,6 +120,10 @@ class GameWindow
     @bubble_rainbows.each do |bubble|
       @score += 1 if bubble.state == :popped
     end
+  end
+
+  def pause_game
+    @paused = true
   end
 end
 

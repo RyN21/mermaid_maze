@@ -7,11 +7,11 @@ class Mermaid
   MERMAID_HEIGHT = 64
   MOVE_SPEED     = 3.5
   CHRACTERS_LIST = [:blue, :pink, :purple, :green]
-  attr_reader :direction, :score
+  attr_reader :direction, :score, :lives
 
-  def initialize maze, character
+  def initialize maze, character, lives = 3
     @maze            = maze
-    @lives           = 3
+    @lives           = lives
     @character       = Config::MERMAIDS[CHRACTERS_LIST[character]]
     @blaster_sound   = Gosu::Sample.new("assets/sounds/blaster.mp3")
     @up_frames       = @character[:up]
@@ -23,8 +23,10 @@ class Mermaid
     @frame_counter   = 0
     @x               = 0
     @y               = 0
-    @direction       = :down
     @mermaid_scale   = 0.75
+    @x_center        = @x + MERMAID_WIDTH * @mermaid_scale / 2
+    @y_center        = @x + MERMAID_HEIGHT * @mermaid_scale / 2
+    @direction       = :down
     @ammo_count      = 1000
     @ammo_inventory  = []
     @score           = 0
@@ -165,6 +167,25 @@ class Mermaid
     @ammo_inventory.each do |ammo|
       if ammo_valid_move(ammo.x - 37, ammo.y - 10, ammo.direction) == false
         ammo.explode unless ammo.exploding? || ammo.dead?
+      end
+    end
+  end
+
+  def makes_contact_with_crab(crabs)
+    frames = case @direction
+             when :up then @up_frames
+             when :down then @down_frames
+             when :left then @left_frames
+             when :right then @right_frames
+             end
+
+    crabs.each do |crab|
+      if Gosu.distance(@x + frames[@current_frame].width/2 * @mermaid_scale,
+                       @y + frames[@current_frame].height/2 * @mermaid_scale,
+                       crab.x_center,
+                       crab.y_center) < 30
+        shoot
+        @lives -= 1
       end
     end
   end

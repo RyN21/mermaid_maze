@@ -3,6 +3,7 @@ class Crab
   TILE_SIZE      = Config::CELL_SIZE
   CRAB_WIDTH   = 64
   CRAB_HEIGHT  = 64
+  attr_reader :x_center, :y_center
   def initialize maze
     @maze              = maze
     @lives             = 3
