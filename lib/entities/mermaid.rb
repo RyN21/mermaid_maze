@@ -182,8 +182,8 @@ class Mermaid
     crabs.each do |crab|
       if Gosu.distance(@x + frames[@current_frame].width/2 * @mermaid_scale,
                        @y + frames[@current_frame].height/2 * @mermaid_scale,
-                       crab.x_center,
-                       crab.y_center) < 30
+                       crab.x,
+                       crab.y - 10) < 30
         shoot
         @lives -= 1
       end
