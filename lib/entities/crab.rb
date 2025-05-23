@@ -10,8 +10,8 @@ class Crab
     @crab_scale        = 0.50
     @x                 = 0
     @y                 = 0
-    @x_center          = @x + CRAB_WIDTH * @crab_scale / 2
-    @y_center          = @y + CRAB_HEIGHT * @crab_scale / 2
+    @x_center          = @x + CRAB_WIDTH/2 * @crab_scale
+    @y_center          = @y + CRAB_HEIGHT/2 * @crab_scale
     @speed             = 2
     @crab_frames       = Gosu::Image.load_tiles("assets/images/crab/crab_sprite.png", 64, 64, retro: true)
     @animation_frames  = {

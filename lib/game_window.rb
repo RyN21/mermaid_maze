@@ -26,7 +26,7 @@ class GameWindow
     @bubble_rainbows  = Array.new
     @font             = Gosu::Font.new(30)
     @level_up_sound   = Gosu::Sample.new("assets/sounds/level_up.mp3")
-    @you_lose   = Gosu::Sample.new("assets/sounds/level_up.mp3")
+    @you_lose     = Gosu::Sample.new("assets/sounds/level_up.mp3")
     @score            = 0
     @paused           = false
     # @red_coins_anim     = Gosu::Image.load_tiles("assets/images/coins/red_coin.png", 25, 25)

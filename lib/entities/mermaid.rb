@@ -14,6 +14,7 @@ class Mermaid
     @lives           = lives
     @character       = Config::MERMAIDS[CHRACTERS_LIST[character]]
     @blaster_sound   = Gosu::Sample.new("assets/sounds/blaster.mp3")
+    @lose_life_sound = Gosu::Sample.new("assets/sounds/lose_life.mp3")
     @up_frames       = @character[:up]
     @down_frames     = @character[:down]
     @left_frames     = @character[:left]
@@ -159,6 +160,10 @@ class Mermaid
     end
   end
 
+  def ammo_hits_crab
+
+  end
+
   def draw_ammo
     @ammo_inventory.each(&:draw)
   end
@@ -182,10 +187,11 @@ class Mermaid
     crabs.each do |crab|
       if Gosu.distance(@x + frames[@current_frame].width/2 * @mermaid_scale,
                        @y + frames[@current_frame].height/2 * @mermaid_scale,
-                       crab.x,
-                       crab.y - 10) < 30
-        shoot
+                       crab.x + 10,
+                       crab.y + 16) < 30
         @lives -= 1
+        @lose_life_sound.play
+        place_on_path
       end
     end
   end
