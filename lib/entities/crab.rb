@@ -6,7 +6,7 @@ class Crab
   attr_reader :x, :y, :x_center, :y_center
   def initialize maze
     @maze              = maze
-    @lives             = 3
+    @lives             = 1
     @crab_scale        = 0.50
     @x                 = 0
     @y                 = 0
@@ -85,6 +85,14 @@ class Crab
       @current_frame = (@current_frame + 1) % 2
       @frame_counter = 0
     end
+  end
+
+  def hit
+    @lives -= 1
+  end
+
+  def dead?
+    @lives == 0
   end
 
 

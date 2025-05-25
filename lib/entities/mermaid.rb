@@ -160,8 +160,22 @@ class Mermaid
     end
   end
 
-  def ammo_hits_crab
-
+  def ammo_hits_crab(crabs)
+    @ammo_inventory.each do |ammo|
+      frames = ammo.blaster_frames
+      scale = ammo.ammo_scale
+      x = ammo.x + frames[ammo.current_frame].width/2 * scale
+      y = ammo.y + frames[ammo.current_frame].height/2 * scale
+      crabs.each do |crab|
+        if Gosu.distance(x,
+                         y,
+                         crab.x + 10,
+                         crab.y + 16) < 20
+          crab.hit
+          @ammo_inventory.delete(ammo)
+        end
+      end
+    end
   end
 
   def draw_ammo
@@ -195,12 +209,6 @@ class Mermaid
       end
     end
   end
-
-  # def ammo_hits_crab
-  #   @ammo_inventory.each do |ammo|
-  #
-  #   end
-  # end
 
 
   private

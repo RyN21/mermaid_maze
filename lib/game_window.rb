@@ -47,9 +47,11 @@ class GameWindow
     @mermaid.update_ammo
     @mermaid.collects_bubbles(@bubble_rainbows)
     @mermaid.ammo_hits_bubble(@bubble_rainbows)
+    @mermaid.ammo_hits_crab(@crabs)
     @mermaid.makes_contact_with_crab(@crabs)
     score
     @bubble_rainbows.reject! { |bubble| bubble.popped? }
+    @crabs.reject! { |crab| crab.dead? }
     next_level_reset_maze if all_bubbles_collected?
     restart_level if @mermaid.lives == 0
   end
@@ -105,7 +107,6 @@ class GameWindow
       @crabs << Crab.new(@maze)
     end
     reset_bubbles
-    @score = 0
   end
 
   def restart_level
