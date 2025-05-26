@@ -3,17 +3,21 @@ class Crab
   TILE_SIZE      = Config::CELL_SIZE
   CRAB_WIDTH   = 64
   CRAB_HEIGHT  = 64
-  attr_reader :x, :y, :x_center, :y_center
+  attr_reader :x, :y, :x_center, :y_center, :crab_scale, :height, :width
   def initialize maze
     @maze              = maze
-    @lives             = 1
+    @lives             = 20
     @crab_scale        = 0.50
+    @width             = CRAB_WIDTH
+    @height            = CRAB_HEIGHT
     @x                 = 0
     @y                 = 0
     @x_center          = @x + CRAB_WIDTH/2 * @crab_scale
     @y_center          = @y + CRAB_HEIGHT/2 * @crab_scale
     @speed             = 2
     @crab_frames       = Gosu::Image.load_tiles("assets/images/crab/crab_sprite.png", 64, 64, retro: true)
+    @hit_sound         = Gosu::Sample.new("assets/sounds/hit.mp3")
+
     @animation_frames  = {
       up: [@crab_frames[0], @crab_frames[1]],
       down: [@crab_frames[2], @crab_frames[3]],
@@ -89,6 +93,7 @@ class Crab
 
   def hit
     @lives -= 1
+    @hit_sound.play
   end
 
   def dead?

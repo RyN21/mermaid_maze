@@ -15,6 +15,7 @@ class Mermaid
     @character       = Config::MERMAIDS[CHRACTERS_LIST[character]]
     @blaster_sound   = Gosu::Sample.new("assets/sounds/blaster.mp3")
     @lose_life_sound = Gosu::Sample.new("assets/sounds/lose_life.mp3")
+    @impact_sound    = Gosu::Sample.new("assets/sounds/impact.mp3")
     @up_frames       = @character[:up]
     @down_frames     = @character[:down]
     @left_frames     = @character[:left]
@@ -169,8 +170,8 @@ class Mermaid
       crabs.each do |crab|
         if Gosu.distance(x,
                          y,
-                         crab.x + 10,
-                         crab.y + 16) < 20
+                         crab.x + crab.width/2 * crab.crab_scale,
+                         crab.y + crab.height/2 * crab.crab_scale) < 20
           crab.hit
           @ammo_inventory.delete(ammo)
         end

@@ -14,6 +14,7 @@ class Ammo
     @blaster_frames    = Gosu::Image.load_tiles("assets/images/ammo/blaster_1.png", 98, 60, retro: true)
     @blaster_color     = rand(1..5)
     @impact_frames     = Gosu::Image.load_tiles("assets/images/ammo/explosion_#{@blaster_color}.png", 40, 73, retro: true)
+    @impact_sound      = Gosu::Sample.new("assets/sounds/impact.mp3")
     @current_frame     = 0
     @frame_delay       = 100
     @last_frame_change = Gosu.milliseconds
@@ -78,6 +79,7 @@ class Ammo
     @state = :exploding
     @current_frame = 0
     @last_frame_change = Gosu.milliseconds
+    @impact_sound.play
     # @impact_sound.play
   end
 
