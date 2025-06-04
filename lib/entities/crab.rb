@@ -6,7 +6,7 @@ class Crab
   attr_reader :x, :y, :x_center, :y_center, :crab_scale, :height, :width
   def initialize maze
     @maze              = maze
-    @lives             = 20
+    @lives             = 3
     @crab_scale        = 0.50
     @width             = CRAB_WIDTH
     @height            = CRAB_HEIGHT
