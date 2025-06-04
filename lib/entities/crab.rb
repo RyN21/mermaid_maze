@@ -16,19 +16,21 @@ class Crab
     @y_center          = @y + CRAB_HEIGHT/2 * @crab_scale
     @speed             = 2
     @crab_frames       = Gosu::Image.load_tiles("assets/images/crab/crab_sprite.png", 64, 64, retro: true)
+    @crab_hit_frames   = Gosu::Image.load_tiles("assets/images/crab/crab_hit.png", 64, 64, retro: true)
     @hit_sound         = Gosu::Sample.new("assets/sounds/hit.mp3")
 
-    @animation_frames  = {
-      up: [@crab_frames[0], @crab_frames[1]],
-      down: [@crab_frames[2], @crab_frames[3]],
-      left: [@crab_frames[4], @crab_frames[5]],
-      right: [@crab_frames[6], @crab_frames[7]]
-    }
+    # @animation_frames  = {
+    #   up: [@crab_frames[0], @crab_frames[1]],
+    #   down: [@crab_frames[2], @crab_frames[3]],
+    #   left: [@crab_frames[4], @crab_frames[5]],
+    #   right: [@crab_frames[6], @crab_frames[7]]
+    # }
     @current_frame     = 0
     @frame_delay       = 4
     @frame_counter     = 0
     @directions        = [:up, :down, :left, :right]
     @current_direction = :down
+    @state             = :good
     place_on_path
   end
 
@@ -38,7 +40,7 @@ class Crab
   end
 
   def draw
-    frames = @animation_frames[@current_direction]
+    frames = animation_frames[@current_direction]
     frames[@current_frame].draw(@x, @y, 0, @crab_scale, @crab_scale)
   end
 
@@ -61,8 +63,8 @@ class Crab
     when :right
       is_valid_move(@x + @speed - 5, @y - 10)
     end
-
   end
+
   def move_forward
     case @current_direction
     when :up
@@ -83,6 +85,34 @@ class Crab
     @current_direction = @directions[index]
   end
 
+  def animation_frames
+    case @state
+    when :good
+      animation_frames  = {
+        up: [@crab_frames[0], @crab_frames[1]],
+        down: [@crab_frames[2], @crab_frames[3]],
+        left: [@crab_frames[4], @crab_frames[5]],
+        right: [@crab_frames[6], @crab_frames[7]]
+      }
+    when :hit
+      animation_frames  = {
+        up: [@crab_hit_frames[0], @crab_hit_frames[1]],
+        down: [@crab_hit_frames[2], @crab_hit_frames[3]],
+        left: [@crab_hit_frames[4], @crab_hit_frames[5]],
+        right: [@crab_hit_frames[6], @crab_hit_frames[7]]
+      }
+    # when :hurt
+    #   animation_frames  = {
+    #     up: [@crab_frames[0], @crab_frames[1]],
+    #     down: [@crab_frames[2], @crab_frames[3]],
+    #     left: [@crab_frames[4], @crab_frames[5]],
+    #     right: [@crab_frames[6], @crab_frames[7]]
+    #   }
+    end
+
+    animation_frames
+  end
+
   def update_animation
     @frame_counter += 1
     if @frame_counter >= @frame_delay
@@ -92,6 +122,7 @@ class Crab
   end
 
   def hit
+    @state = :hit
     @lives -= 1
     @hit_sound.play
   end
